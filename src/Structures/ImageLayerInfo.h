@@ -17,7 +17,7 @@ struct ImageLayerInfo : public BaseLayerInfo
 	}
 
 	//GridColorScheme
-	IDispatch * ColorScheme;
+	IMyInterface * ColorScheme;
 	CStringW GridFileName;//filename for a grid
 
 };

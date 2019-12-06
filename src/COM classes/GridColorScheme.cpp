@@ -285,7 +285,7 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 
 		for(int i = 0; i < 6; i++)
 		{
-			ComHelper::CreateInstance(idGridColorBreak, (IDispatch**)&br);
+			ComHelper::CreateInstance(idGridColorBreak, (IMyInterface**)&br);
 			br->put_LowValue(LowValue + i * step);
 			br->put_HighValue(LowValue + (i + 1) * step);
 			GetUtils()->ColorByName(colors[i], &clr1);
@@ -299,8 +299,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == SummerMountains )
 	{	
 		IGridColorBreak* lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue( LowValue );
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -321,8 +321,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == FallLeaves )
 	{	
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue( LowValue );
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -343,8 +343,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == Desert )
 	{
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -365,8 +365,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == Glaciers )
 	{
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -387,8 +387,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == Meadow )
 	{	
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -409,8 +409,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == ValleyFires )
 	{	
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -431,8 +431,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == DeadSea )
 	{	
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -453,8 +453,8 @@ STDMETHODIMP CGridColorScheme::UsePredefined(double LowValue, double HighValue, 
 	else if( Preset == Highway1 )
 	{	
 		IGridColorBreak * lowbreak, * highbreak;
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
-		CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&lowbreak);
+		//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&highbreak);
 
 		lowbreak->put_LowValue(LowValue);
 		lowbreak->put_HighValue( (HighValue + LowValue) / 2 );
@@ -480,7 +480,7 @@ STDMETHODIMP CGridColorScheme::GetLightSource(IVector **result)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 
-	CoCreateInstance(CLSID_Vector,NULL,CLSCTX_INPROC_SERVER,IID_IVector,(void**)result);
+	//CoCreateInstance(CLSID_Vector,NULL,CLSCTX_INPROC_SERVER,IID_IVector,(void**)result);
 	(*result)->put_i(_lightSource.geti());
 	(*result)->put_j(_lightSource.getj());
 	(*result)->put_k(_lightSource.getk());
@@ -522,7 +522,7 @@ STDMETHODIMP CGridColorScheme::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CGridColorScheme::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -696,7 +696,7 @@ bool CGridColorScheme::DeserializeCore(CPLXMLNode* node)
 			if (strcmp(node->pszValue, "GridColorBreakClass") == 0)
 			{
 				IGridColorBreak* br = NULL;
-				CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&br);
+				//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&br);
 				
 				if (br)
 				{

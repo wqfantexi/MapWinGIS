@@ -25,22 +25,14 @@
 #pragma once
 #include "BaseProvider.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
 #define TILE_PROVIDER_COUNT 23
 
-class ATL_NO_VTABLE CTileProviders :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CTileProviders, &CLSID_TileProviders>,
-	public IDispatchImpl<ITileProviders, &IID_ITileProviders, &LIBID_MapWinGIS, VERSION_MAJOR, VERSION_MINOR>
+class CTileProviders : public ITileProviders
 {
 public:
 	CTileProviders()
 		: _tiles(NULL)
 	{
-		_pUnkMarshaler = NULL;
 		_key = SysAllocString(L"");
 		_globalCallback = NULL;
 		_lastErrorCode = tkNO_ERROR;
@@ -64,30 +56,6 @@ public:
 			delete _providers[i];
 		}
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_TILEPROVIDERS)
-	BEGIN_COM_MAP(CTileProviders)
-		COM_INTERFACE_ENTRY(ITileProviders)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 public:
 	STDMETHOD(get_LastErrorCode)(/*[out, retval]*/ long *pVal);
@@ -138,5 +106,3 @@ public:
 	CStringW get_CopyrightNotice(tkTileProvider provider);
 	CString get_LicenseUrl(tkTileProvider provider);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(TileProviders), CTileProviders)

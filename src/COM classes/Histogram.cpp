@@ -158,7 +158,7 @@ STDMETHODIMP CHistogram::GenerateColorScheme(LONG numClasses, IGridColorScheme**
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)retVal);
+	ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)retVal);
 
 	long totalCount;
 	get_TotalCount(&totalCount);
@@ -179,7 +179,7 @@ STDMETHODIMP CHistogram::GenerateColorScheme(LONG numClasses, IGridColorScheme**
 		if (accCount >= targetCount || i == _numBuckets - 1)
 		{
 			IGridColorBreak* br = NULL;
-			ComHelper::CreateInstance(idGridColorBreak, (IDispatch**)&br);
+			ComHelper::CreateInstance(idGridColorBreak, (IMyInterface**)&br);
 			
 			get_Value(firstIndex, &value);
 			br->put_LowValue(value);

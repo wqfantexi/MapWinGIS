@@ -69,7 +69,7 @@ STDMETHODIMP CShapefileCategories::Insert(long Index, BSTR Name, IShapefileCateg
 
 	*retVal = nullptr;
 	IShapefileCategory* cat = nullptr;
-	CoCreateInstance( CLSID_ShapefileCategory, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefileCategory, (void**)&cat);
+	//CoCreateInstance( CLSID_ShapefileCategory, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefileCategory, (void**)&cat);
 	if (cat == nullptr) return S_OK;
 	
 	// initialization with default options if shapefile is present
@@ -404,7 +404,7 @@ STDMETHODIMP CShapefileCategories::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CShapefileCategories::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -1039,7 +1039,7 @@ STDMETHODIMP CShapefileCategories::GeneratePolygonColors(IColorScheme* scheme, V
 	if (!scheme)
 	{
 		// let's create a scheme if none is provided
-		ComHelper::CreateInstance(idColorScheme, (IDispatch**)&scheme);
+		ComHelper::CreateInstance(idColorScheme, (IMyInterface**)&scheme);
 		scheme->AddBreak(0.0, RGB(255, 179, 71));
 		scheme->AddBreak(0.1, RGB(253, 253, 150));
 		scheme->AddBreak(0.2, RGB(119, 221, 119));

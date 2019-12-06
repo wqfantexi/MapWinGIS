@@ -95,7 +95,7 @@ void CShapeNetwork::CopyShape( bool reversePoints, IShape * oldshape, IShape * n
 		oldpnt->Release();
 		oldpnt = NULL;
 
-		CoCreateInstance(CLSID_Point,NULL,CLSCTX_INPROC_SERVER,IID_IPoint,(void**)&newpnt);		
+		//CoCreateInstance(CLSID_Point,NULL,CLSCTX_INPROC_SERVER,IID_IPoint,(void**)&newpnt);		
 		newpnt->put_X(x);
 		newpnt->put_Y(y);
 		newpnt->put_Z(z);
@@ -316,7 +316,7 @@ STDMETHODIMP CShapeNetwork::Build(IShapefile *Shapefile, long ShapeIndex, long F
 	IPoint * pnt = NULL;
 	IUtils * gen = NULL;
 	
-	CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&gen);	
+	//CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&gen);	
 	for( int ls = 0; ls < numShapes; ls++ )
 	{	if( undir_graph.edges[ls] != NULL )
 		{	Shapefile->get_Shape(ls,&shape);		
@@ -455,7 +455,7 @@ STDMETHODIMP CShapeNetwork::Build(IShapefile *Shapefile, long ShapeIndex, long F
 		_netshpfile->Release();
 	_netshpfile = NULL;
 	//Create the shapefile
-	CoCreateInstance(CLSID_Shapefile,NULL,CLSCTX_INPROC_SERVER,IID_IShapefile,(void**)&_netshpfile);
+	//CoCreateInstance(CLSID_Shapefile,NULL,CLSCTX_INPROC_SERVER,IID_IShapefile,(void**)&_netshpfile);
 	Shapefile->get_ShapefileType(&shpfiletype);
 	_netshpfile->CreateNew(m_globalSettings.emptyBstr,shpfiletype,&vbretval);
 
@@ -467,7 +467,8 @@ STDMETHODIMP CShapeNetwork::Build(IShapefile *Shapefile, long ShapeIndex, long F
 	long fieldpos =0;
 	int f = 0;
 	for( f = 0; f < numFields; f++ )
-	{	CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&newfield);
+	{	
+		//CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&newfield);
 		Shapefile->get_Field(f,&oldfield);
 		CopyField(oldfield,newfield);
 		fieldpos = f;
@@ -481,8 +482,8 @@ STDMETHODIMP CShapeNetwork::Build(IShapefile *Shapefile, long ShapeIndex, long F
 	//Create two new fields
 	IField * id = NULL;
 	IField * did = NULL;
-	CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&id);
-	CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&did);
+	//CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&id);
+	//CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&did);
 				
 	CComBSTR bstrNetId("NET_ID");
 	id->put_Name(bstrNetId);
@@ -1221,7 +1222,7 @@ STDMETHODIMP CShapeNetwork::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CShapeNetwork::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -1517,7 +1518,7 @@ STDMETHODIMP CShapeNetwork::Open(IShapefile *sf, ICallback *cBack, VARIANT_BOOL 
 	long lval1 = 0, lval2 = 0;
 
 	IUtils * gen = NULL;	
-	CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&gen);	
+	//CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&gen);	
 	
 	long percent = 0, newpercent = 0;
 	double total = numShapes;
@@ -1796,7 +1797,7 @@ STDMETHODIMP CShapeNetwork::RasterizeD8(VARIANT_BOOL UseNetworkBounds, IGridHead
 		long nrows = roundCustom((yurcenter - yllcenter) / cellsize) + 1;
 
 		IGridHeader * nbheader = NULL;
-		CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&nbheader);
+		//CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&nbheader);
 		nbheader->put_dX(cellsize);
 		nbheader->put_dY(cellsize);
 		VARIANT vndv;
@@ -1810,7 +1811,7 @@ STDMETHODIMP CShapeNetwork::RasterizeD8(VARIANT_BOOL UseNetworkBounds, IGridHead
 		nbheader->put_YllCenter(yllcenter);
 
 		VARIANT_BOOL vbretval = FALSE;
-		CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)retval);
+		//CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)retval);
 
 		CallbackHelper::Progress(_globalCallback, 0, "ShpNetwork::RasterizeD8", _key);
 
@@ -1869,7 +1870,7 @@ STDMETHODIMP CShapeNetwork::RasterizeD8(VARIANT_BOOL UseNetworkBounds, IGridHead
 		Header->put_NodataValue(vndv);
 
 		VARIANT_BOOL vbretval = FALSE;
-		CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)retval);
+		//CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)retval);
 
 		CallbackHelper::Progress(_globalCallback, 0, "ShpNetwork::RasterizeD8", _key);
 

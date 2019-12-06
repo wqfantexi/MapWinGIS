@@ -225,7 +225,7 @@ STDMETHODIMP COgrLayer::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP COgrLayer::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -667,7 +667,7 @@ STDMETHODIMP COgrLayer::get_GeoProjection(IGeoProjection** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	IGeoProjection* gp = NULL;
-	ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&gp);
+	ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&gp);
 	*retVal = gp;
 
 	if (!CheckState()) return S_OK;
@@ -1616,7 +1616,7 @@ STDMETHODIMP COgrLayer::GenerateCategories(BSTR FieldName, tkClassificationType 
 		}
 
 		CComPtr<IColorScheme> scheme = NULL;
-		ComHelper::CreateInstance(idColorScheme, (IDispatch**)&scheme);
+		ComHelper::CreateInstance(idColorScheme, (IMyInterface**)&scheme);
 		if (scheme) {
 			scheme->SetColors2(colorStart, colorEnd);
 			ct->ApplyColorScheme(schemeType, scheme);

@@ -7,15 +7,11 @@
 #endif
 
 // CShapeEditor
-class ATL_NO_VTABLE CShapeEditor :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CShapeEditor, &CLSID_ShapeEditor>,
-	public IDispatchImpl<IShapeEditor, &IID_IShapeEditor, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CShapeEditor :public IShapeEditor
 {
 public:
 	CShapeEditor()
 	{
-		_pUnkMarshaler = NULL;
 		_activeShape = new EditorBase();
 		_activeShape->AreaDisplayMode = admMetric;
 		_lastErrorCode = tkNO_ERROR;
@@ -45,30 +41,6 @@ public:
 		delete _activeShape;
 	}
 
-	DECLARE_REGISTRY_RESOURCEID(IDR_EDITSHAPE)
-
-	BEGIN_COM_MAP(CShapeEditor)
-		COM_INTERFACE_ENTRY(IShapeEditor)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 public:
 	STDMETHOD(get_LastErrorCode)(/*[out, retval]*/ long *pVal);
 	STDMETHOD(get_ErrorMsg)(/*[in]*/ long ErrorCode, /*[out, retval]*/ BSTR *pVal);
@@ -257,4 +229,3 @@ public:
 	STDMETHOD(Serialize)(BSTR* retVal);
 	STDMETHOD(Deserialize)(BSTR state, VARIANT_BOOL* retVal);
 };
-OBJECT_ENTRY_AUTO(__uuidof(ShapeEditor), CShapeEditor)

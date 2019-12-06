@@ -25,20 +25,12 @@
 #pragma once
 #include "MeasuringBase.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
 // CMeasuring
-class ATL_NO_VTABLE CMeasuring :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CMeasuring, &CLSID_Measuring>,
-	public IDispatchImpl<IMeasuring, &IID_IMeasuring, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CMeasuring : public IMeasuring
 {
 public:
 	CMeasuring() 
 	{
-		_pUnkMarshaler = NULL;
 		_measuring = new MeasuringBase();
 		_lastErrorCode = tkNO_ERROR;
 		_globalCallback = NULL;
@@ -50,32 +42,6 @@ public:
 		SysFreeString(_key);
 		delete _measuring;
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_MEASURING)
-
-	BEGIN_COM_MAP(CMeasuring)
-		COM_INTERFACE_ENTRY(IMeasuring)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 public:
 	STDMETHOD(get_LastErrorCode)(/*[out, retval]*/ long *pVal);
 	STDMETHOD(get_ErrorMsg)(/*[in]*/ long ErrorCode, /*[out, retval]*/ BSTR *pVal);
@@ -149,5 +115,3 @@ public:
 	MeasuringBase* GetBase() { return _measuring; }
 	
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Measuring), CMeasuring)

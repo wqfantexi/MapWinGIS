@@ -87,7 +87,7 @@ STDMETHODIMP CShapeEditor::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CShapeEditor::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-		ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -1391,7 +1391,7 @@ void CShapeEditor::ApplyOverlayColoring(tkEditorOverlay overlay)
 CShapeEditor* CShapeEditor::Clone()
 {
 	CShapeEditor* editor = NULL;
-	ComHelper::CreateInstance(idShapeEditor, (IDispatch**)&editor);
+	ComHelper::CreateInstance(idShapeEditor, (IMyInterface**)&editor);
 	editor->SetIsSubject(true);
 	editor->SetMapCallback(_mapCallback);
 

@@ -27,28 +27,19 @@
 #pragma once
 #include "ShapeDrawingOptions.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
 // CShapefileCategory
-class ATL_NO_VTABLE CShapefileCategory :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CShapefileCategory, &CLSID_ShapefileCategory>,
-	public IDispatchImpl<IShapefileCategory, &IID_IShapefileCategory, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CShapefileCategory : public IShapefileCategory
 {
 public:
 	CShapefileCategory()
 	{
-		_pUnkMarshaler = NULL;
 		_name = SysAllocString(L"");
 		_expression = SysAllocString(L"");
 		_priority = - 1;
 		_drawingOptions = NULL;
-		CoCreateInstance(CLSID_ShapeDrawingOptions,NULL,CLSCTX_INPROC_SERVER,IID_IShapeDrawingOptions,(void**)&_drawingOptions);
+		
 		_categories = NULL;
 		_categoryValue = cvExpression;
-		gReferenceCounter.AddRef(tkInterface::idShapefileCategory);
 	}
 	
 	~CShapefileCategory()
@@ -57,33 +48,7 @@ public:
 		::SysFreeString(_expression);
 		if(_drawingOptions != NULL)
 			_drawingOptions->Release();
-		gReferenceCounter.Release(tkInterface::idShapefileCategory);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_SHAPEFILECATEGORY)
-
-	BEGIN_COM_MAP(CShapefileCategory)
-		COM_INTERFACE_ENTRY(IShapefileCategory)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 public:
 	STDMETHOD(get_Name)(BSTR* retval);
@@ -119,4 +84,3 @@ public:
 	CComVariant* GetMinValue() { return &_minValue; }
 	CComVariant* GetMaxValue() { return &_maxValue; }
 };
-OBJECT_ENTRY_AUTO(__uuidof(ShapefileCategory), CShapefileCategory)

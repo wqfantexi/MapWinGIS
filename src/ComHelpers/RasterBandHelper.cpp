@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "RasterBandHelper.h"
+#include "GridColorBreak.h"
+#include "GridColorScheme.h"
 
 // ***************************************************************
 //		Cast()
@@ -48,7 +50,8 @@ bool RasterBandHelper::ColorTableToColorScheme(GDALRasterBand* _poBand, IGridCol
 	if (!colorTableExists)
 		return false;
 
-	CoCreateInstance(CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)newscheme);
+	*newscheme = new CGridColorScheme();
+	//CoCreateInstance(CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)newscheme);
 	(*newscheme)->put_AmbientIntensity(0.7);
 	(*newscheme)->put_LightSourceIntensity(0.7);
 	(*newscheme)->SetLightSource(0, 1);
@@ -88,7 +91,8 @@ bool RasterBandHelper::ColorTableToColorScheme(GDALRasterBand* _poBand, IGridCol
 		{
 			// Put a break for the last chunk of color bands
 			IGridColorBreak * newbreak;
-			CoCreateInstance(CLSID_GridColorBreak, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorBreak, (void**)&newbreak);
+			//CoCreateInstance(CLSID_GridColorBreak, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorBreak, (void**)&newbreak);
+			newbreak = new CGridColorBreak();
 			newbreak->put_LowValue(boundA);
 			newbreak->put_HighValue(boundB);
 			newbreak->put_LowColor(lastColor);
@@ -96,7 +100,7 @@ bool RasterBandHelper::ColorTableToColorScheme(GDALRasterBand* _poBand, IGridCol
 			newbreak->put_ColoringType(ColoringType::Random);
 
 			(*newscheme)->InsertBreak(newbreak);
-			newbreak->Release();
+			delete newbreak;
 
 			// Set the new bounds and the new "last" color
 			lastColor = newColor;
@@ -110,14 +114,15 @@ bool RasterBandHelper::ColorTableToColorScheme(GDALRasterBand* _poBand, IGridCol
 	}
 
 	// Write the last one
-	IGridColorBreak * newbreak;
-	CoCreateInstance(CLSID_GridColorBreak, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorBreak, (void**)&newbreak);
+	IGridColorBreak * newbreak = new CGridColorBreak;
+	//CoCreateInstance(CLSID_GridColorBreak, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorBreak, (void**)&newbreak);
 	newbreak->put_LowValue(boundA);
 	newbreak->put_HighValue(boundB);
 	newbreak->put_LowColor(lastColor);
 	newbreak->put_HighColor(lastColor);
 	(*newscheme)->InsertBreak(newbreak);
-	newbreak->Release();
+	//newbreak->Release();
+	delete newbreak;
 
 	return true;
 }

@@ -77,7 +77,7 @@ IShapefile* Ogr2Shape::CreateShapefile(OGRLayer* layer, ShpfileType activeShapeT
 		layer->ResetReading();
 	}
 
-	ComHelper::CreateInstance(idShapefile, (IDispatch**)&sf);
+	ComHelper::CreateInstance(idShapefile, (IMyInterface**)&sf);
 	CComBSTR bstr = L"";
 	sf->CreateNew(bstr, shpType, &vbretval);
 
@@ -119,7 +119,7 @@ void Ogr2Shape::CopyFields(OGRLayer* layer, IShapefile* sf)
 	CStringA name = layer->GetFIDColumn();
 	if (name.GetLength() > 0)
 	{
-		ComHelper::CreateInstance(idField, (IDispatch**)&fld);
+		ComHelper::CreateInstance(idField, (IMyInterface**)&fld);
 		fld->put_Type(INTEGER_FIELD);
 		CComBSTR bstrName(name);
 		fld->put_Name(bstrName);
@@ -132,7 +132,7 @@ void Ogr2Shape::CopyFields(OGRLayer* layer, IShapefile* sf)
 
 	for (long iFld = 0; iFld < poFields->GetFieldCount(); iFld++)
 	{
-		ComHelper::CreateInstance(idField, (IDispatch**)&fld);
+		ComHelper::CreateInstance(idField, (IMyInterface**)&fld);
 
 		OGRFieldDefn* oField = poFields->GetFieldDefn(iFld);
 		OGRFieldType type = oField->GetType();

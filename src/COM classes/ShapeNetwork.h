@@ -33,15 +33,11 @@ struct dPOINT
 };
 
 // CShapeNetwork
-class ATL_NO_VTABLE CShapeNetwork : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CShapeNetwork, &CLSID_ShapeNetwork>,
-	public IDispatchImpl<IShapeNetwork, &IID_IShapeNetwork, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CShapeNetwork : public IShapeNetwork
 {
 public:
 	CShapeNetwork()
 	{
-		_pUnkMarshaler = NULL;
 		_lastErrorCode = tkNO_ERROR;
 		_globalCallback = NULL;
 		_key = SysAllocString(L"");
@@ -60,34 +56,6 @@ public:
 			delete [] _network;
 		_network = NULL;
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_SHAPENETWORK)
-
-	DECLARE_NOT_AGGREGATABLE(CShapeNetwork)
-
-	BEGIN_COM_MAP(CShapeNetwork)
-		COM_INTERFACE_ENTRY(IShapeNetwork)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 // IShapeNetwork
 public:
 	STDMETHOD(Close)(/*[out, retval]*/ VARIANT_BOOL * retval);
@@ -224,5 +192,3 @@ private:
 	void recPrintShpNetwork(shpNetNode * allnodes, long index, ofstream & out);
 	void PrintShpNetwork(shpNetNode * allnodes, long outlet, const char * filename);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(ShapeNetwork), CShapeNetwork)

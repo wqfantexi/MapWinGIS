@@ -66,7 +66,7 @@ public:
 		_rendering = rrUnknown;
 		_useHistogram = false;
 		
-		ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&_predefinedColorScheme);
+		ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&_predefinedColorScheme);
 	};
 
 	~GdalRaster()

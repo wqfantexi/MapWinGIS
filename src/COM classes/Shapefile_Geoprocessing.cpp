@@ -1826,7 +1826,7 @@ void CShapefile::DoClipOperation(VARIANT_BOOL SelectedOnlySubject, IShapefile* s
 
     if (_globalCallback)
     {
-        _globalCallback->QueryInterface(IID_IStopExecution, (void**)&_stopExecution);
+        //_globalCallback->QueryInterface(IID_IStopExecution, (void**)&_stopExecution);
     }
 
     // building spatial index for the operation

@@ -88,7 +88,7 @@ STDMETHODIMP CShapefileCategory::put_DrawingOptions(IShapeDrawingOptions* newVal
 	}
 	else
 	{
-		ComHelper::SetRef(newVal, (IDispatch**)&_drawingOptions, false);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_drawingOptions, false);
 	}
 	return S_OK;
 }
@@ -110,7 +110,7 @@ void CShapefileCategory::put_underlyingOptions(CDrawingOptionsEx* newVal)
 	if (_drawingOptions == NULL)
 	{
 		// this should not happen, but we still add it to be sure
-		CoCreateInstance(CLSID_ShapeDrawingOptions,NULL,CLSCTX_INPROC_SERVER,IID_IShapeDrawingOptions,(void**)&_drawingOptions);
+		//CoCreateInstance(CLSID_ShapeDrawingOptions,NULL,CLSCTX_INPROC_SERVER,IID_IShapeDrawingOptions,(void**)&_drawingOptions);
 	}
 	((CShapeDrawingOptions*)_drawingOptions)->put_underlyingOptions(newVal);
 }

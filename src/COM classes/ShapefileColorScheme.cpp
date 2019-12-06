@@ -102,7 +102,7 @@ STDMETHODIMP CShapefileColorScheme::put_ColorBreak(long Index, IShapefileColorBr
 		}
 		else
 		{
-			ComHelper::SetRef(newVal, (IDispatch**)&_allBreaks[Index], false);
+			ComHelper::SetRef(newVal, (IMyInterface**)&_allBreaks[Index], false);
 		}
 	}
 	else
@@ -160,7 +160,7 @@ STDMETHODIMP CShapefileColorScheme::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CShapefileColorScheme::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 

@@ -81,7 +81,7 @@ STDMETHODIMP CTiles::get_GlobalCallback(ICallback** pVal)
 STDMETHODIMP CTiles::put_GlobalCallback(ICallback* newVal)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState())
-    ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+    ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
     return S_OK;
 }
 

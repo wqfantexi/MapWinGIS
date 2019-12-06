@@ -209,7 +209,7 @@ void CMapView::SetLayerVisible(long LayerHandle, BOOL bNewValue)
 // ************************************************************
 //		GetGetObject()
 // ************************************************************
-LPDISPATCH CMapView::GetGetObject(long LayerHandle)
+IMyInterface* CMapView::GetGetObject(long LayerHandle)
 {
 	if( IsValidLayer(LayerHandle) )
 	{	
@@ -218,10 +218,10 @@ LPDISPATCH CMapView::GetGetObject(long LayerHandle)
 			// for OGR layers we return underlying shapefile to make it compliant with existing client code
 			IShapefile* sf = NULL;
 			_allLayers[LayerHandle]->QueryShapefile(&sf);
-			return (IDispatch*)sf;
+			return (IMyInterface*)sf;
 		}
 
-		IDispatch* obj = _allLayers[LayerHandle]->get_Object();
+		IMyInterface* obj = _allLayers[LayerHandle]->get_Object();
 		if (obj != NULL) obj->AddRef();
 		return obj;
 	}
@@ -238,7 +238,7 @@ LPDISPATCH CMapView::GetGetObject(long LayerHandle)
 long CMapView::AddLayerFromFilename(LPCTSTR Filename, tkFileOpenStrategy openStrategy, VARIANT_BOOL visible)
 {
 	USES_CONVERSION;
-	IDispatch* layer = NULL;
+	IMyInterface* layer = NULL;
 	CComBSTR bstr(Filename);
 	_fileManager->Open(bstr, openStrategy, _globalCallback, &layer);
 	if (layer) {
@@ -300,7 +300,7 @@ int CMapView::AddLayerCore(Layer* layer)
 // ***************************************************************
 //		AttachGlobalCallbackToLayers()
 // ***************************************************************
-void CMapView::AttachGlobalCallbackToLayers(IDispatch* object)
+void CMapView::AttachGlobalCallbackToLayers(IMyInterface* object)
 {
 	if (!m_globalSettings.attachMapCallbackToLayers || !_globalCallback) return;
 
@@ -309,10 +309,10 @@ void CMapView::AttachGlobalCallbackToLayers(IDispatch* object)
 	CComPtr<IGrid> igrid = NULL;
 	CComPtr<IOgrLayer> iogr = NULL;
 
-	object->QueryInterface(IID_IShapefile, (void**)&ishp);
-	object->QueryInterface(IID_IImage, (void**)&iimg);
-	object->QueryInterface(IID_IGrid, (void**)&igrid);
-	object->QueryInterface(IID_IOgrLayer, (void**)&iogr);
+	//object->QueryInterface(IID_IShapefile, (void**)&ishp);
+	//object->QueryInterface(IID_IImage, (void**)&iimg);
+	//object->QueryInterface(IID_IGrid, (void**)&igrid);
+	//object->QueryInterface(IID_IOgrLayer, (void**)&iogr);
 
 	CComPtr<ICallback> callback = NULL;
 	
@@ -349,7 +349,7 @@ void CMapView::AttachGlobalCallbackToLayers(IDispatch* object)
 // ***************************************************************
 //		AddLayer()
 // ***************************************************************
-long CMapView::AddLayer(LPDISPATCH Object, BOOL pVisible)
+long CMapView::AddLayer(IMyInterface* Object, BOOL pVisible)
 {
 	long layerHandle = -1;
 
@@ -360,7 +360,7 @@ long CMapView::AddLayer(LPDISPATCH Object, BOOL pVisible)
 	}
 
 	CComPtr<IOgrDatasource> ds = NULL;
-	Object->QueryInterface(IID_IOgrDatasource, (void**)&ds);
+	//Object->QueryInterface(IID_IOgrDatasource, (void**)&ds);
 	if (ds) 
 	{
 		bool mapIsEmpty = GetNumLayers() == 0;
@@ -398,24 +398,24 @@ long CMapView::AddLayer(LPDISPATCH Object, BOOL pVisible)
 // ***************************************************************
 //		AddSingleLayer()
 // ***************************************************************
-long CMapView::AddSingleLayer(LPDISPATCH Object, BOOL pVisible)
+long CMapView::AddSingleLayer(IMyInterface* Object, BOOL pVisible)
 {
 	long layerHandle = -1;
 
 	IShapefile * ishp = NULL;
-	Object->QueryInterface(IID_IShapefile, (void**)&ishp);
+	//Object->QueryInterface(IID_IShapefile, (void**)&ishp);
 
 	IImage * iimg = NULL;
-	Object->QueryInterface(IID_IImage, (void**)&iimg);
+	//Object->QueryInterface(IID_IImage, (void**)&iimg);
 
 	IGrid * igrid = NULL;
-	Object->QueryInterface(IID_IGrid, (void**)&igrid);
+	//Object->QueryInterface(IID_IGrid, (void**)&igrid);
 
 	IOgrLayer * iogr = NULL;
-	Object->QueryInterface(IID_IOgrLayer, (void**)&iogr);
+	//Object->QueryInterface(IID_IOgrLayer, (void**)&iogr);
 
 	IWmsLayer* iwms = NULL;
-	Object->QueryInterface(IID_IWmsLayer, (void**)&iwms);
+	//Object->QueryInterface(IID_IWmsLayer, (void**)&iwms);
 
 	if (!igrid && !iimg && !ishp && !iogr && !iwms)
 	{
@@ -509,7 +509,7 @@ long CMapView::AddSingleLayer(LPDISPATCH Object, BOOL pVisible)
 				CStringW legendName = isProxy ? grid->GetProxyLegendName() : grid->GetLegendName();
 
 				CComPtr<IGridColorScheme> newScheme = NULL;
-				ComHelper::CreateInstance(tkInterface::idGridColorScheme, (IDispatch**)&newScheme);
+				ComHelper::CreateInstance(tkInterface::idGridColorScheme, (IMyInterface**)&newScheme);
 
 				CComBSTR bstrName(legendName);
 				CComBSTR bstrElementName("GridColoringScheme");
@@ -1413,7 +1413,7 @@ int CMapView::DeserializeLayerCore(CPLXMLNode* node, CStringW ProjectName, bool 
 	{
 		// opening shapefile
 		CComPtr<IShapefile> sf = NULL;
-		ComHelper::CreateInstance(idShapefile, (IDispatch**)&sf);
+		ComHelper::CreateInstance(idShapefile, (IMyInterface**)&sf);
 		
 		if (sf) 
 		{
@@ -1447,7 +1447,7 @@ int CMapView::DeserializeLayerCore(CPLXMLNode* node, CStringW ProjectName, bool 
 	{
 		// opening image
 		IImage* img = NULL;
-		CoCreateInstance( CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)&img );
+		//CoCreateInstance( CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)&img );
 		
 		if (img) 
 		{
@@ -1469,7 +1469,7 @@ int CMapView::DeserializeLayerCore(CPLXMLNode* node, CStringW ProjectName, bool 
 	else if (layerType == OgrLayerSource)
 	{
 		CComPtr<IOgrLayer> layer = NULL;
-		ComHelper::CreateInstance(idOgrLayer, (IDispatch**)&layer);
+		ComHelper::CreateInstance(idOgrLayer, (IMyInterface**)&layer);
 		if (layer) 
 		{
 			CPLXMLNode* nodeOgrLayer = CPLGetXMLNode(node, "OgrLayerClass");
@@ -1483,7 +1483,7 @@ int CMapView::DeserializeLayerCore(CPLXMLNode* node, CStringW ProjectName, bool 
 	else if (layerType == WmsLayerSource)
 	{
 		CComPtr<IWmsLayer> layer = NULL;
-		ComHelper::CreateInstance(idWmsLayer, (IDispatch**)&layer);
+		ComHelper::CreateInstance(idWmsLayer, (IMyInterface**)&layer);
 		if (layer)  
 		{
 			CPLXMLNode* nodeWmsLayer = CPLGetXMLNode(node, "WmsLayerClass");

@@ -22,7 +22,7 @@ public:
 			CComPtr<IUnknown> punkConnection = m_vec.GetAt(iConnection);
 			pThis->Unlock();
 
-			IDispatch * pConnection = static_cast<IDispatch *>(punkConnection.p);
+			IMyInterface * pConnection = static_cast<IMyInterface *>(punkConnection.p);
 
 			if (pConnection)
 			{

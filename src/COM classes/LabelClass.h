@@ -26,56 +26,20 @@
 #pragma once
 #include "LabelOptions.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
 // CLabelClass
-class ATL_NO_VTABLE CLabelClass :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CLabelClass, &CLSID_Label>,
-	public IDispatchImpl<ILabel, &IID_ILabel, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CLabelClass : public ILabel
 {
 public:
 	CLabelClass()
 	{
-		_pUnkMarshaler = NULL;
 		_canDelete = true;
 		_label = new CLabelInfo();
-		gReferenceCounter.AddRef(tkInterface::idLabel);
 	}
 	~CLabelClass()
 	{
 		if (_label != NULL && _canDelete) 
 			delete _label;
-		gReferenceCounter.Release(tkInterface::idLabel);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_LABELCLASS)
-
-	BEGIN_COM_MAP(CLabelClass)
-		COM_INTERFACE_ENTRY(ILabel)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 public:
 	STDMETHOD(get_Visible)(VARIANT_BOOL* retval)			{*retval = _label->visible ? VARIANT_TRUE : VARIANT_FALSE;	return S_OK;};
 	STDMETHOD(put_Visible)(VARIANT_BOOL newVal)				{_label->visible = newVal?true:false;	return S_OK;};		
@@ -111,5 +75,3 @@ public:
 	char* get_LabelData();
 	void put_LabelData(char* newVal);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Label), CLabelClass)

@@ -11,7 +11,7 @@ void HotTrackingInfo::Update(IShapefile* source, IShape* shp, int layerHandle, i
 {
 	VARIANT_BOOL vb;
 	if (!Shapefile) {
-		ComHelper::CreateInstance(idShapefile, (IDispatch**)&Shapefile);
+		ComHelper::CreateInstance(idShapefile, (IMyInterface**)&Shapefile);
 	}
 	else {
 		Shapefile->Close(&vb);

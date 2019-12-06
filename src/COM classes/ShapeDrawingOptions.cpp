@@ -102,7 +102,7 @@ STDMETHODIMP CShapeDrawingOptions::put_Picture(IImage* newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 	if (!newVal) {
-		ComHelper::SetRef(newVal, (IDispatch**)&_options.picture);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_options.picture);
 		return S_OK;
 	}
 
@@ -132,7 +132,7 @@ STDMETHODIMP CShapeDrawingOptions::put_Picture(IImage* newVal)
 		
 		if (width > 0 && height > 0)
 		{
-			ComHelper::SetRef(newVal, (IDispatch**)&_options.picture);
+			ComHelper::SetRef(newVal, (IMyInterface**)&_options.picture);
 		}
 	}
 	return S_OK;
@@ -737,7 +737,7 @@ STDMETHODIMP CShapeDrawingOptions::Clone(IShapeDrawingOptions** retval)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 	
 	IShapeDrawingOptions* sdo = NULL;
-	CoCreateInstance(CLSID_ShapeDrawingOptions,NULL,CLSCTX_INPROC_SERVER,IID_IShapeDrawingOptions,(void**)&sdo);
+	//CoCreateInstance(CLSID_ShapeDrawingOptions,NULL,CLSCTX_INPROC_SERVER,IID_IShapeDrawingOptions,(void**)&sdo);
 	if (sdo)
 	{
 		((CShapeDrawingOptions*)sdo)->put_underlyingOptions(&_options);
@@ -875,7 +875,7 @@ STDMETHODIMP CShapeDrawingOptions::get_LinePattern(ILinePattern** retVal)
 STDMETHODIMP CShapeDrawingOptions::put_LinePattern(ILinePattern* newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef((IDispatch*)newVal, (IDispatch**)&(_options.linePattern), false);
+	ComHelper::SetRef((IMyInterface*)newVal, (IMyInterface**)&(_options.linePattern), false);
 	return S_OK;
 }
 
@@ -1770,7 +1770,7 @@ bool CShapeDrawingOptions::DeserializeCore(CPLXMLNode* node)
 	if (psChild)
 	{
 		IImage* img = NULL;
-		CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&img);
+		//CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&img);
 		if (img)
 		{
 			((CImageClass*)img)->DeserializeCore(psChild);
@@ -1784,7 +1784,7 @@ bool CShapeDrawingOptions::DeserializeCore(CPLXMLNode* node)
 	if (psChild)
 	{
 		ILinePattern* pattern = NULL;
-		CoCreateInstance(CLSID_LinePattern,NULL,CLSCTX_INPROC_SERVER,IID_ILinePattern,(void**)&pattern);
+		//CoCreateInstance(CLSID_LinePattern,NULL,CLSCTX_INPROC_SERVER,IID_ILinePattern,(void**)&pattern);
 		if (pattern)
 		{
 			((CLinePattern*)pattern)->DeserializeCore(psChild);

@@ -69,7 +69,6 @@ public:
 	~FieldWrapper()
 	{
 		if (field) {
-			field->Release();
 			field = NULL;
 		}
 	}

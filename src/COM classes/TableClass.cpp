@@ -534,7 +534,7 @@ STDMETHODIMP CTableClass::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CTableClass::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-		ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -951,7 +951,7 @@ void CTableClass::LoadDefaultFields()
 	{
 		type = DBFGetFieldInfo(_dbfHandle, i, fname, &fwidth, &fdecimals);
 
-		CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
+		//CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
 		field->put_GlobalCallback(_globalCallback);
 		CComBSTR bstrName(fname);
 		field->put_Name(bstrName);
@@ -2865,7 +2865,7 @@ STDMETHODIMP CTableClass::EditAddField(BSTR name, FieldType type, int precision,
 	}
 
 	IField* field = NULL;
-	CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
+	//CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
 	field->put_Name(name);
 	field->put_Width(width);
 	field->put_Precision(precision);
@@ -3685,7 +3685,7 @@ void CTableClass::RestoreJoins(CPLXMLNode* node)
 				// ask client to provide the data once more
 				VARIANT_BOOL vb;
 				CComPtr<ITable> tableToFill = NULL;
-				ComHelper::CreateInstance(idTable, (IDispatch**)&tableToFill);
+				ComHelper::CreateInstance(idTable, (IMyInterface**)&tableToFill);
 
 				CComBSTR bstrFilename(filename);
 				if (filename.GetLength() > 4 && filename.Right(4) == ".dbf")
@@ -3699,7 +3699,7 @@ void CTableClass::RestoreJoins(CPLXMLNode* node)
 
 					CComBSTR bstrFields(fields);
 					CComBSTR bstrOptions(options);
-					Fire_OnUpdateJoin(bstrFilename, bstrFields, bstrOptions, tableToFill);
+					//Fire_OnUpdateJoin(bstrFilename, bstrFields, bstrOptions, tableToFill);
 				}
 
 				long numRows, numCols;

@@ -153,7 +153,7 @@ HRESULT CUtils::RunGridToImage(IGrid * Grid, IGridColorScheme * ci, tkGridProxyF
 	CComBSTR bstr, bstrWkt;
 	gridheader->get_Projection(&bstr);
 	CComPtr<IGeoProjection> gp = NULL;
-	ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&gp);
+	ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&gp);
 	gp->ImportFromAutoDetect(bstr, &vb);
 	gp->ExportToWKT(&bstrWkt);
 	_rasterDataset->SetProjection(OLE2A(bstrWkt));
@@ -201,7 +201,7 @@ HRESULT CUtils::RunGridToImage(IGrid * Grid, IGridColorScheme * ci, tkGridProxyF
 		}
 		
 		// open the created file
-		CoCreateInstance(CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)retval);
+		//CoCreateInstance(CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)retval);
 		if (*retval) {
 			CImageClass* img = (CImageClass*)*retval;
 			CComBSTR bstrName(imageFile);
@@ -304,7 +304,7 @@ void CUtils::GridToImageCore(IGrid *Grid, IGridColorScheme *ci, ICallback *cBack
 	VARIANT_BOOL vbretval;
 	if (inRam)
 	{
-		CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)retval);
+		//CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)retval);
 		(*retval)->CreateNew( ncols, nrows, &vbretval );
 	}
 	else

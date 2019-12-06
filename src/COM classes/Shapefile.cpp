@@ -44,8 +44,6 @@
 
 CShapefile::CShapefile()
 {
-    _pUnkMarshaler = nullptr;
-
     _sortingChanged = true;
     _sortAscending = VARIANT_FALSE;
     _sortField = SysAllocString(L"");
@@ -117,24 +115,24 @@ CShapefile::CShapefile()
     _charts = nullptr;
     _geoProjection = nullptr;
 
-    ComHelper::CreateInstance(idShapeValidationInfo, (IDispatch**)&_inputValidation);
-    ComHelper::CreateInstance(idShapeValidationInfo, (IDispatch**)&_outputValidation);
+    ComHelper::CreateInstance(idShapeValidationInfo, (IMyInterface**)&_inputValidation);
+    ComHelper::CreateInstance(idShapeValidationInfo, (IMyInterface**)&_outputValidation);
 
-    CoCreateInstance(CLSID_ShapeDrawingOptions, nullptr, CLSCTX_INPROC_SERVER, IID_IShapeDrawingOptions,
-                     (void**)&_selectDrawOpt);
-    CoCreateInstance(CLSID_ShapeDrawingOptions, nullptr, CLSCTX_INPROC_SERVER, IID_IShapeDrawingOptions,
-                     (void**)&_defaultDrawOpt);
-    CoCreateInstance(CLSID_ShapefileCategories, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefileCategories,
-                     (void**)&_categories);
-    CoCreateInstance(CLSID_Labels, nullptr, CLSCTX_INPROC_SERVER, IID_ILabels, (void**)&_labels);
-    CoCreateInstance(CLSID_Charts, nullptr, CLSCTX_INPROC_SERVER, IID_ICharts, (void**)&_charts);
-    CoCreateInstance(CLSID_GeoProjection, nullptr, CLSCTX_INPROC_SERVER, IID_IGeoProjection, (void**)&_geoProjection);
+    //CoCreateInstance(CLSID_ShapeDrawingOptions, nullptr, CLSCTX_INPROC_SERVER, IID_IShapeDrawingOptions,
+     //                (void**)&_selectDrawOpt);
+    //CoCreateInstance(CLSID_ShapeDrawingOptions, nullptr, CLSCTX_INPROC_SERVER, IID_IShapeDrawingOptions,
+     //                (void**)&_defaultDrawOpt);
+    //CoCreateInstance(CLSID_ShapefileCategories, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefileCategories,
+    //                 (void**)&_categories);
+    //CoCreateInstance(CLSID_Labels, nullptr, CLSCTX_INPROC_SERVER, IID_ILabels, (void**)&_labels);
+    //CoCreateInstance(CLSID_Charts, nullptr, CLSCTX_INPROC_SERVER, IID_ICharts, (void**)&_charts);
+    //CoCreateInstance(CLSID_GeoProjection, nullptr, CLSCTX_INPROC_SERVER, IID_IGeoProjection, (void**)&_geoProjection);
 
     this->put_ReferenceToLabels();
     this->put_ReferenceToCategories();
     this->put_ReferenceToCharts();
 
-    ComHelper::CreateInstance(idUndoList, (IDispatch**)&_undoList);
+    ComHelper::CreateInstance(idUndoList, (IMyInterface**)&_undoList);
 
     gReferenceCounter.AddRef(tkInterface::idShapefile);
 }
@@ -208,7 +206,7 @@ void CShapefile::put_ShapeRenderingData(int ShapeIndex, CShapeData* data)
 void CShapefile::SetValidationInfo(IShapeValidationInfo* info, tkShapeValidationType validationType)
 {
     ComHelper::SetRef(info,
-                      (IDispatch**)&(validationType == svtInput ? _inputValidation : _outputValidation), true);
+                      (IMyInterface**)&(validationType == svtInput ? _inputValidation : _outputValidation), true);
 }
 
 #pragma region Properties
@@ -285,7 +283,7 @@ STDMETHODIMP CShapefile::get_GlobalCallback(ICallback** pVal)
 STDMETHODIMP CShapefile::put_GlobalCallback(ICallback* newVal)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState())
-    ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+    ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
     if (_table != nullptr)
         _table->put_GlobalCallback(newVal);
 
@@ -298,7 +296,7 @@ STDMETHODIMP CShapefile::put_GlobalCallback(ICallback* newVal)
 STDMETHODIMP CShapefile::put_StopExecution(IStopExecution* stopper)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState())
-    ComHelper::SetRef((IDispatch*)stopper, (IDispatch**)&_stopExecution, true);
+    ComHelper::SetRef((IMyInterface*)stopper, (IMyInterface**)&_stopExecution, true);
     return S_OK;
 }
 
@@ -567,7 +565,7 @@ bool CShapefile::OpenCore(CStringW tmpShpfileName, ICallback* cBack)
     // opening DBF
     if (!_table)
     {
-        CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
+        //CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
     }
     else
     {
@@ -742,7 +740,7 @@ HRESULT CShapefile::CreateNewCore(BSTR ShapefileName, ShpfileType ShapefileType,
 
         if (vb == VARIANT_TRUE)
         {
-            CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
+            //CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
 
             _table->CreateNew(m_globalSettings.emptyBstr, &vb);
 
@@ -810,7 +808,7 @@ HRESULT CShapefile::CreateNewCore(BSTR ShapefileName, ShpfileType ShapefileType,
 
     if (vb == VARIANT_TRUE)
     {
-        CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
+        //CoCreateInstance(CLSID_Table, nullptr, CLSCTX_INPROC_SERVER, IID_ITable, (void**)&_table);
 
         _table->put_GlobalCallback(_globalCallback);
 
@@ -2049,7 +2047,7 @@ STDMETHODIMP CShapefile::put_SelectionDrawingOptions(IShapeDrawingOptions* newVa
     }
     else
     {
-        ComHelper::SetRef(newVal, (IDispatch**)&_selectDrawOpt, false);
+        ComHelper::SetRef(newVal, (IMyInterface**)&_selectDrawOpt, false);
     }
     return S_OK;
 }
@@ -2077,7 +2075,7 @@ STDMETHODIMP CShapefile::put_DefaultDrawingOptions(IShapeDrawingOptions* newVal)
     }
     else
     {
-        ComHelper::SetRef(newVal, (IDispatch**)&_defaultDrawOpt);
+        ComHelper::SetRef(newVal, (IMyInterface**)&_defaultDrawOpt);
     }
     return S_OK;
 }
@@ -2108,7 +2106,7 @@ STDMETHODIMP CShapefile::get_Categories(IShapefileCategories** pVal)
 
 STDMETHODIMP CShapefile::put_Categories(IShapefileCategories* newVal)
 {
-    if (ComHelper::SetRef((IDispatch*)newVal, (IDispatch**)&_categories, false))
+    if (ComHelper::SetRef((IMyInterface*)newVal, (IMyInterface**)&_categories, false))
     {
         ((CShapefileCategories*)_categories)->put_ParentShapefile(this);
     }
@@ -2603,7 +2601,7 @@ STDMETHODIMP CShapefile::get_GeoProjection(IGeoProjection** retVal)
 STDMETHODIMP CShapefile::put_GeoProjection(IGeoProjection* pVal)
 {
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
-    ComHelper::SetRef((IDispatch*)pVal, (IDispatch**)&_geoProjection, false);
+    ComHelper::SetRef((IMyInterface*)pVal, (IMyInterface**)&_geoProjection, false);
     if (_prjfileName.GetLength() != 0)
     {
         VARIANT_BOOL vbretval;

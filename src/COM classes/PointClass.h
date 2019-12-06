@@ -27,15 +27,11 @@
 // CPointClass
 // In contrast with other classes we are using CComSingleThreadModel base class here.
 // CComMultiThreadModel increases memory usage by 24 more bytes which is unacceptable.
-class ATL_NO_VTABLE CPointClass : 
-	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CPointClass, &CLSID_Point>,
-	public IDispatchImpl<IPoint, &IID_IPoint, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CPointClass : public IPoint
 {
 public:
 	CPointClass()
 	{	
-		_pUnkMarshaler = NULL;
 		_x = 0.0;
 		_y = 0.0;
 		_z = 0.0;
@@ -46,35 +42,6 @@ public:
 	{	
 		//gReferenceCounter.Release(tkInterface::idPoint);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_POINT)
-
-	DECLARE_NOT_AGGREGATABLE(CPointClass)
-
-	BEGIN_COM_MAP(CPointClass)
-		COM_INTERFACE_ENTRY(IPoint)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
-
 // IPoint
 public:
 	STDMETHOD(get_M)(/*[out, retval]*/ double *pVal);
@@ -101,5 +68,3 @@ private:
 	double _m;
 
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Point), CPointClass)

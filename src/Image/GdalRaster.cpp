@@ -110,7 +110,7 @@ bool GdalRaster::OpenCore(CStringA& filename, GDALAccess accessType)
 // *************************************************************
 void GdalRaster::ApplyCustomColorScheme(IGridColorScheme * scheme)
 {
-	ComHelper::SetRef((IDispatch*)scheme, (IDispatch**)&_customColorScheme, true);
+	ComHelper::SetRef((IMyInterface*)scheme, (IMyInterface**)&_customColorScheme, true);
 }
 
 // *************************************************************
@@ -1917,7 +1917,7 @@ void GdalRaster::Deserialize(CPLXMLNode* node)
 	{
 		if (!_customColorScheme) 
 		{
-			ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&_customColorScheme);
+			ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&_customColorScheme);
 		}
 
 		((CGridColorScheme*)_customColorScheme)->DeserializeCore(nodeScheme);

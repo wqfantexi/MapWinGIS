@@ -26,15 +26,11 @@
 #include "cppVector.h"
 
 // CVector
-class ATL_NO_VTABLE CVector : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CVector, &CLSID_Vector>,
-	public IDispatchImpl<IVector, &IID_IVector, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CVector : public IVector
 {
 public:
 	CVector()
 	{
-		_pUnkMarshaler = NULL;
 		_lastErrorCode = tkNO_ERROR;
 		_globalCallback = NULL;
 		_key = SysAllocString(L"");
@@ -43,34 +39,6 @@ public:
 	{
 		::SysFreeString(_key);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_VECTOR)
-
-	DECLARE_NOT_AGGREGATABLE(CVector)
-
-	BEGIN_COM_MAP(CVector)
-		COM_INTERFACE_ENTRY(IVector)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
-
 // IVectro
 public:
 	STDMETHOD(get_Key)(/*[out, retval]*/ BSTR *pVal);
@@ -95,5 +63,3 @@ private:
 	ICallback * _globalCallback;
 	BSTR _key;
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Vector), CVector)

@@ -527,7 +527,7 @@ STDMETHODIMP CGdalUtils::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CGdalUtils::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-		ComHelper::SetRef(newVal, reinterpret_cast<IDispatch**>(&_globalCallback));
+		ComHelper::SetRef(newVal, reinterpret_cast<IMyInterface**>(&_globalCallback));
 	return S_OK;
 }
 

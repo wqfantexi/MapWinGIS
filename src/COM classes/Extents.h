@@ -25,15 +25,11 @@
 #pragma once
 
 // CExtents
-class ATL_NO_VTABLE CExtents : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CExtents, &CLSID_Extents>,
-	public IDispatchImpl<IExtents, &IID_IExtents, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CExtents : public IExtents
 {
 public:
 	CExtents()
 	{
-		_pUnkMarshaler = NULL;
 		_xmin = 0.0;
 		_xmax = 0.0;
 		_ymin = 0.0;
@@ -43,33 +39,6 @@ public:
 		_mmin = 0.0;
 		_mmax = 0.0;
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_EXTENTS)
-
-	DECLARE_NOT_AGGREGATABLE(CExtents)
-
-	BEGIN_COM_MAP(CExtents)
-		COM_INTERFACE_ENTRY(IExtents)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 // IExtents
 public:
 	STDMETHOD(SetMeasureBounds)(/*[in]*/double mMin, /*[in]*/double mMax);
@@ -107,5 +76,3 @@ private:
 	double _mmin;
 	double _mmax;
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Extents), CExtents)

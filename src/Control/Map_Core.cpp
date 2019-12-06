@@ -26,7 +26,7 @@ IPoint* CMapView::GetBaseProjectionPoint(double rotPixX, double rotPixY)
 	long basePixX = 0, basePixY = 0;
 	double baseProjX = 0, baseProjY = 0;
 
-	CoCreateInstance(CLSID_Point, nullptr, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&curPoint);
+	//CoCreateInstance(CLSID_Point, nullptr, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&curPoint);
 
 	if (_rotate == nullptr || _rotate->degAngle == 0.0)
 	{
@@ -138,7 +138,7 @@ void CMapView::SetImageLayerPercentTransparent(long LayerHandle, float newValue)
 //  SetImageLayerColorScheme
 // ***************************************************
 // Will be deprecated
-VARIANT_BOOL CMapView::SetImageLayerColorScheme(LONG LayerHandle, IDispatch* ColorScheme)
+VARIANT_BOOL CMapView::SetImageLayerColorScheme(LONG LayerHandle, IMyInterface* ColorScheme)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -146,7 +146,7 @@ VARIANT_BOOL CMapView::SetImageLayerColorScheme(LONG LayerHandle, IDispatch* Col
 	{
 		// redirected to image class for backward compatibility
 		IGridColorScheme* scheme = nullptr;
-		ColorScheme->QueryInterface(IID_IGridColorScheme, (void**)&scheme);
+		//ColorScheme->QueryInterface(IID_IGridColorScheme, (void**)&scheme);
 		if (scheme)
 		{
 			IImage* img = this->GetImage(LayerHandle);
@@ -437,7 +437,7 @@ void CMapView::AlignShapeLayerAndShapes(Layer * layer)
 // *********************************************************
 //		ApplyLegendColors()
 // *********************************************************
-BOOL CMapView::ApplyLegendColors(LPDISPATCH pLegend)
+BOOL CMapView::ApplyLegendColors(IMyInterface* pLegend)
 {
 	this->ErrorMessage(tkMETHOD_NOT_IMPLEMENTED);
 	return FALSE;
@@ -446,7 +446,7 @@ BOOL CMapView::ApplyLegendColors(LPDISPATCH pLegend)
 // *********************************************************
 //		GetColorScheme()
 // *********************************************************
-LPDISPATCH CMapView::GetColorScheme(long LayerHandle)
+IMyInterface* CMapView::GetColorScheme(long LayerHandle)
 {
 	if (IS_VALID_LAYER(LayerHandle, _allLayers))
 	{

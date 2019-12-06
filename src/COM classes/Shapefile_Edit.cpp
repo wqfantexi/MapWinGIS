@@ -452,7 +452,7 @@ STDMETHODIMP CShapefile::EditUpdateShape(long shapeIndex, IShape* shpNew, VARIAN
 		return S_OK;
 	}
 
-	ComHelper::SetRef(shpNew, (IDispatch**)&_shapeData[shapeIndex]->shape, false);
+	ComHelper::SetRef(shpNew, (IMyInterface**)&_shapeData[shapeIndex]->shape, false);
 	ReregisterShape(shapeIndex);
 	_shapeData[shapeIndex]->modified(true);
 

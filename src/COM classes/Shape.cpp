@@ -40,7 +40,6 @@ static char THIS_FILE[] = __FILE__;
 // **********************************************
 CShape::CShape()
 {	
-	_pUnkMarshaler = NULL;
 	
 	USES_CONVERSION;
 	_key = A2BSTR("");
@@ -162,7 +161,7 @@ STDMETHODIMP CShape::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CShape::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -822,7 +821,7 @@ STDMETHODIMP CShape::get_Center(IPoint **pVal)
 	y = yMin + (yMax - yMin)/2;
 
 	IPoint * pnt = NULL;
-	CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&pnt );
+	//CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&pnt );
 	pnt->put_X(x);pnt->put_Y(y);
 	*pVal = pnt;
 	
@@ -1671,7 +1670,7 @@ STDMETHODIMP CShape::get_InteriorPoint(IPoint** retval)
 	
 	if (x != 0 || y !=0 )
 	{
-		CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)retval );
+		//CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)retval );
 		(*retval)->put_X(x);
 		(*retval)->put_Y(y);
 	}

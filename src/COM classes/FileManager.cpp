@@ -64,7 +64,7 @@ STDMETHODIMP CFileManager::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CFileManager::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -291,7 +291,7 @@ STDMETHODIMP CFileManager::get_CanOpenAs(BSTR Filename, tkFileOpenStrategy strat
 //****************************************************************
 //			Open()
 //****************************************************************
-STDMETHODIMP CFileManager::Open(BSTR Filename, tkFileOpenStrategy openStrategy, ICallback* callback, IDispatch** retVal)
+STDMETHODIMP CFileManager::Open(BSTR Filename, tkFileOpenStrategy openStrategy, ICallback* callback, IMyInterface** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 	*retVal = NULL;
@@ -352,7 +352,7 @@ STDMETHODIMP CFileManager::OpenVectorLayer(BSTR Filename, ShpfileType preferedSh
 	_lastOpenStrategy = fosVectorLayer;
 
 	CComPtr<IOgrDatasource> ds = NULL;
-	ComHelper::CreateInstance(idOgrDatasource, (IDispatch**)&ds);
+	ComHelper::CreateInstance(idOgrDatasource, (IMyInterface**)&ds);
 	if (!ds)  return S_OK;
 		
 	VARIANT_BOOL vb;
@@ -417,7 +417,7 @@ STDMETHODIMP CFileManager::OpenShapefile(BSTR Filename, ICallback* callback, ISh
 		return S_OK;
 	
 	IShapefile* sf = NULL;
-	ComHelper::CreateInstance(idShapefile, (IDispatch**)&sf);
+	ComHelper::CreateInstance(idShapefile, (IMyInterface**)&sf);
 	sf->Open(Filename, _globalCallback, &vb);
 	if (!vb)
 	{
@@ -470,7 +470,7 @@ STDMETHODIMP CFileManager::OpenRaster(BSTR Filename, tkFileOpenStrategy openStra
 		case fosDirectGrid:
 			{
 				IImage* img = NULL;
-				ComHelper::CreateInstance(idImage, (IDispatch**)&img);
+				ComHelper::CreateInstance(idImage, (IMyInterface**)&img);
 				
 				img->Open( Filename, ImageType::USE_FILE_EXTENSION, VARIANT_FALSE, _globalCallback, &vb );
 				if (!vb)
@@ -529,7 +529,7 @@ STDMETHODIMP CFileManager::OpenRaster(BSTR Filename, tkFileOpenStrategy openStra
 		case fosProxyForGrid:
 			{
 				CComPtr<IGrid> grid = NULL;
-				ComHelper::CreateInstance(idGrid, (IDispatch**)&grid);
+				ComHelper::CreateInstance(idGrid, (IMyInterface**)&grid);
 				if (grid)
 				{
 					m_globalSettings.forceReadOnlyModeForGdalRasters = true;
@@ -693,7 +693,7 @@ STDMETHODIMP CFileManager::OpenFromDatabase(BSTR connectionString, BSTR layerNam
 	*retVal = NULL;
 	
 	IOgrDatasource* source = NULL;
-	ComHelper::CreateInstance(idOgrDatasource, (IDispatch**)&source);
+	ComHelper::CreateInstance(idOgrDatasource, (IMyInterface**)&source);
 	VARIANT_BOOL vb;
 	source->Open(connectionString, &vb);
 	if (!vb)
@@ -736,7 +736,7 @@ STDMETHODIMP CFileManager::OpenVectorDatasource(BSTR Filename, IOgrDatasource** 
 	_lastOpenStrategy = fosVectorLayer;	    // TODO: perhaps fosVectorDatasource is more appropriate
 
 	IOgrDatasource* ds = NULL;
-	ComHelper::CreateInstance(idOgrDatasource, (IDispatch**)&ds);
+	ComHelper::CreateInstance(idOgrDatasource, (IMyInterface**)&ds);
 	if (!ds)  return S_OK;
 
 	VARIANT_BOOL vb;

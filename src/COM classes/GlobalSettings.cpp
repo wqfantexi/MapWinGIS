@@ -807,7 +807,7 @@ STDMETHODIMP CGlobalSettings::get_ApplicationCallback(ICallback** pVal)
 STDMETHODIMP CGlobalSettings::put_ApplicationCallback(ICallback* newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	ComHelper::SetRef(newVal, (IDispatch**)&m_globalSettings.callback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&m_globalSettings.callback);
 	return S_OK;
 }
 

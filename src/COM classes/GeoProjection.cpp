@@ -71,7 +71,7 @@ STDMETHODIMP CGeoProjection::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CGeoProjection::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -258,7 +258,7 @@ STDMETHODIMP CGeoProjection::Clone(IGeoProjection** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	*retVal = NULL;
-	ComHelper::CreateInstance(tkInterface::idGeoProjection, (IDispatch**)retVal);
+	ComHelper::CreateInstance(tkInterface::idGeoProjection, (IMyInterface**)retVal);
 	VARIANT_BOOL vb;
 	(*retVal)->CopyFrom(this, &vb);
 	if (!vb)

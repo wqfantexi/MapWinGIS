@@ -60,7 +60,6 @@ void CGrid::CallBack(long percent,const char * message)
 // ***************************************************
 CGrid::CGrid()
 {	
-	_pUnkMarshaler = NULL;
 	_dgrid = NULL;
 	_fgrid = NULL;
 	_lgrid = NULL;
@@ -115,7 +114,7 @@ STDMETHODIMP CGrid::get_Header(IGridHeader **pVal)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 	USES_CONVERSION;
 
-	CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)pVal);
+	//CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)pVal);
 	CGridHeader* header = (CGridHeader*)(*pVal);
 
 	if (_trgrid != NULL)
@@ -948,7 +947,7 @@ STDMETHODIMP CGrid::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CGrid::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -979,7 +978,7 @@ void CGrid::SaveProjectionAsWkt()
 	if (prjFilename.GetLength() > 0)
 	{
 		IGeoProjection* proj = NULL;
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&proj);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&proj);
 		if (proj)
 		{
 			VARIANT_BOOL vb;
@@ -1789,7 +1788,7 @@ STDMETHODIMP CGrid::Save(BSTR Filename, GridFileType  FileType, ICallback * cBac
 		// Make a temporary grid of the type requested
 		IGrid * tempGrid = NULL;
 		HRESULT reslt;
-		reslt = CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (LPVOID*)(&tempGrid));
+		//reslt = CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (LPVOID*)(&tempGrid));
 
 		IGridHeader * hdr;
 		this->get_Header(&hdr);
@@ -2402,7 +2401,7 @@ IGrid* CGrid::Clone(BSTR newFilename)
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
 	IGridHeader* newHeader = NULL;
-	CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&newHeader);
+	//CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&newHeader);
 	
 	IGridHeader* header = NULL;
 	this->get_Header(&header);
@@ -2412,7 +2411,7 @@ IGrid* CGrid::Clone(BSTR newFilename)
 	header->get_NodataValue(&noDataValue);
 
 	IGrid* newGrid = NULL;
-	CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)&newGrid);
+	//CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)&newGrid);
 	
 	GridDataType dataType;
 	this->get_DataType(&dataType);
@@ -2437,7 +2436,7 @@ IGrid* CGrid::Clone(BSTR newFilename)
 IGrid* CGrid::Clip(BSTR newFilename, long firstCol, long lastCol, long firstRow, long lastRow)
 {
 	IGridHeader* newHeader = NULL;
-	CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&newHeader);
+	//CoCreateInstance(CLSID_GridHeader,NULL,CLSCTX_INPROC_SERVER,IID_IGridHeader,(void**)&newHeader);
 	
 	IGridHeader* header = NULL;
 	this->get_Header(&header);
@@ -2455,7 +2454,7 @@ IGrid* CGrid::Clip(BSTR newFilename, long firstCol, long lastCol, long firstRow,
 	header->get_NodataValue(&noDataValue);
 
 	IGrid* newGrid = NULL;
-	CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)&newGrid);
+	//CoCreateInstance(CLSID_Grid,NULL,CLSCTX_INPROC_SERVER,IID_IGrid,(void**)&newGrid);
 	
 	GridDataType dataType;
 	this->get_DataType(&dataType);
@@ -2584,7 +2583,7 @@ STDMETHODIMP CGrid::OpenAsImage(IGridColorScheme* scheme, tkGridProxyMode proxyM
 	*retVal = NULL;
 	
 	if (!_globalCallback && cBack)
-		ComHelper::SetRef(cBack, (IDispatch**)&_globalCallback, false);
+		ComHelper::SetRef(cBack, (IMyInterface**)&_globalCallback, false);
 
 	tkGridProxyMode mode = proxyMode;
 	if (mode == gpmAuto)
@@ -2642,7 +2641,7 @@ void CGrid::OpenAsDirectImage(IGridColorScheme* scheme, ICallback* cBack, IImage
 	IImage* img = NULL;
 	CStringW gridName = GetFilename().MakeLower();
 
-	CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&img);
+	//CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&img);
 
 	CComBSTR bstr(gridName);
 	img->Open(bstr, ImageType::USE_FILE_EXTENSION, false, cBack, &vb);
@@ -2700,7 +2699,7 @@ IImage* CGrid::OpenImageProxy()
 	if (hasProxy)
 	{
 		VARIANT_BOOL vb;
-		ComHelper::CreateInstance(tkInterface::idImage, (IDispatch**)&iimg);
+		ComHelper::CreateInstance(tkInterface::idImage, (IMyInterface**)&iimg);
 		
 		CComBSTR bstrName(this->GetProxyName());
 		iimg->Open(bstrName, ImageType::USE_FILE_EXTENSION, VARIANT_FALSE, _globalCallback, &vb);
@@ -2819,7 +2818,7 @@ STDMETHODIMP CGrid::RetrieveColorScheme(tkGridSchemeRetrieval method, IGridColor
 		CStringW legendName = this->GetLegendName();
 		if (Utility::FileExistsW(legendName))
 		{
-			CoCreateInstance( CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)&scheme);
+			//CoCreateInstance( CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)&scheme);
 			CComBSTR bstrLegendName(legendName);
 			scheme->ReadFromFile(bstrLegendName, m_globalSettings.emptyBstr, &vb);
 		}
@@ -2835,7 +2834,7 @@ STDMETHODIMP CGrid::RetrieveColorScheme(tkGridSchemeRetrieval method, IGridColor
 			if (hasProxy)
 			{
 				CStringW legendName = this->GetProxyLegendName();
-				CoCreateInstance( CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)&scheme);
+				//CoCreateInstance( CLSID_GridColorScheme, NULL, CLSCTX_INPROC_SERVER, IID_IGridColorScheme, (void**)&scheme);
 				CComBSTR bstrLegendName(legendName);
 				scheme->ReadFromFile(bstrLegendName, m_globalSettings.emptyBstr, &vb);
 			}
@@ -2898,11 +2897,11 @@ bool CGrid::BuildUniqueColorScheme(int maxValuesCount, PredefinedColorScheme col
 		return false;
 
 	IGridColorScheme* result = NULL;
-	CoCreateInstance(CLSID_GridColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorScheme,(void**)&result);
+	//CoCreateInstance(CLSID_GridColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorScheme,(void**)&result);
 	if (result)
 	{
 		IColorScheme* scheme = NULL;
-		CoCreateInstance(CLSID_ColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IColorScheme,(void**)&scheme);
+		//CoCreateInstance(CLSID_ColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IColorScheme,(void**)&scheme);
 		scheme->SetColors4(colors);		
 		
 		double minValue, maxValue;
@@ -2917,7 +2916,7 @@ bool CGrid::BuildUniqueColorScheme(int maxValuesCount, PredefinedColorScheme col
 
 			// add break for value
 			IGridColorBreak * brk;
-			CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&brk);
+			//CoCreateInstance(CLSID_GridColorBreak,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorBreak,(void**)&brk);
 			brk->put_LowValue( val );
 			brk->put_HighValue( val );
 
@@ -3008,7 +3007,7 @@ IGridColorScheme* CGrid::BuildGradientColorSchemeCore(PredefinedColorScheme colo
 	this->get_Minimum(&min);
 	
 	IGridColorScheme* scheme = NULL;
-	CoCreateInstance(CLSID_GridColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorScheme,(void**)&scheme);
+	//CoCreateInstance(CLSID_GridColorScheme,NULL,CLSCTX_INPROC_SERVER,IID_IGridColorScheme,(void**)&scheme);
 	if (scheme)
 	{
 		double low, high;
@@ -3050,7 +3049,7 @@ STDMETHODIMP CGrid::get_Band(long bandIndex, IGdalRasterBand** retVal)
 		return S_OK;
 	}
 
-	ComHelper::CreateInstance(idGdalRasterBand, (IDispatch**)retVal);
+	ComHelper::CreateInstance(idGdalRasterBand, (IMyInterface**)retVal);
 
 	RasterBandHelper::Cast(*retVal)->InjectBand(band);
 

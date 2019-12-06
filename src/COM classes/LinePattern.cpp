@@ -67,7 +67,7 @@ STDMETHODIMP CLinePattern::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CLinePattern::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -145,7 +145,7 @@ STDMETHODIMP CLinePattern::put_Line(int Index, ILineSegment* newVal)
 	{
 		if (newVal)
 		{
-			ComHelper::SetRef(newVal, (IDispatch**)&_lines[Index], false);
+			ComHelper::SetRef(newVal, (IMyInterface**)&_lines[Index], false);
 		}
 		else
 		{
@@ -181,7 +181,7 @@ STDMETHODIMP CLinePattern::InsertLine(int Index, OLE_COLOR color, float width, t
 	else
 	{
 		ILineSegment* segm = NULL;
-		CoCreateInstance( CLSID_LineSegment, NULL, CLSCTX_INPROC_SERVER, IID_ILineSegment, (void**)&segm );				
+		//CoCreateInstance( CLSID_LineSegment, NULL, CLSCTX_INPROC_SERVER, IID_ILineSegment, (void**)&segm );				
 		segm->put_Color(color);
 		segm->put_LineWidth(width);
 		segm->put_LineStyle(style);
@@ -218,7 +218,7 @@ STDMETHODIMP CLinePattern::InsertMarker(int Index, tkDefaultPointSymbol marker, 
 	else
 	{
 		ILineSegment* segm = NULL;
-		CoCreateInstance( CLSID_LineSegment, NULL, CLSCTX_INPROC_SERVER, IID_ILineSegment, (void**)&segm );				
+		//CoCreateInstance( CLSID_LineSegment, NULL, CLSCTX_INPROC_SERVER, IID_ILineSegment, (void**)&segm );				
 		segm->put_Marker(marker);
 		segm->put_LineType(lltMarker);
 		segm->AddRef();

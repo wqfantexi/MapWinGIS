@@ -102,7 +102,7 @@ STDMETHODIMP CVector::CrossProduct(IVector *V, IVector **result)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 
-	IVector * normal = new CComObject<CVector>;
+	IVector * normal = new CVector;
 	
 	double i = 0, j = 0, k = 0;
 	V->get_i( &i );
@@ -154,7 +154,7 @@ STDMETHODIMP CVector::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CVector::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 

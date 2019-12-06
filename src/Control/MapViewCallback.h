@@ -15,7 +15,7 @@ public:
 	virtual void _PixelToProjection(double pixelX, double pixelY, double * projX, double * projY) = 0;
 	virtual void _FireBeforeDeleteShape(tkDeleteTarget target, tkMwBoolean* cancel) = 0;
 	virtual tkCursorMode _GetCursorMode() = 0;
-	virtual void _FireValidateShape(LONG LayerHandle, IDispatch* Shape, tkMwBoolean* Cancel) = 0;
+	virtual void _FireValidateShape(LONG LayerHandle, IMyInterface* Shape, tkMwBoolean* Cancel) = 0;
 	virtual void _FireAfterShapeEdit(tkUndoOperation action, LONG LayerHandle, LONG ShapeIndex) = 0;
 	virtual void _FireShapeValidationFailed(LPCTSTR ErrorMessage) = 0;
 	virtual void _FireBeforeVertexDigitized(DOUBLE* pointX, DOUBLE* pointY) = 0;

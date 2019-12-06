@@ -32,12 +32,11 @@
 class ATL_NO_VTABLE CShapefileColorScheme : 
 	public CComObjectRootEx<CComObjectThreadModel>,
 	public CComCoClass<CShapefileColorScheme, &CLSID_ShapefileColorScheme>,
-	public IDispatchImpl<IShapefileColorScheme, &IID_IShapefileColorScheme, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+	public IMyInterfaceImpl<IShapefileColorScheme, &IID_IShapefileColorScheme, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
 {
 public:
 	CShapefileColorScheme()
 	{	
-		_pUnkMarshaler = NULL;
 		_globalCallback = NULL;
 		_lastErrorCode = tkNO_ERROR;
 		_layerHandle = -1;
@@ -60,7 +59,7 @@ public:
 
 	BEGIN_COM_MAP(CShapefileColorScheme)
 		COM_INTERFACE_ENTRY(IShapefileColorScheme)
-		COM_INTERFACE_ENTRY(IDispatch)
+		COM_INTERFACE_ENTRY(IMyInterface)
 		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
 	END_COM_MAP()
 

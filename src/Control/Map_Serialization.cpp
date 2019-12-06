@@ -38,7 +38,7 @@ VARIANT_BOOL CMapView::SaveMapState(LPCTSTR Filename, VARIANT_BOOL RelativePaths
 // *********************************************************
 //		LoadMapState()
 // *********************************************************
-VARIANT_BOOL CMapView::LoadMapState(LPCTSTR Filename, LPDISPATCH Callback)
+VARIANT_BOOL CMapView::LoadMapState(LPCTSTR Filename, IMyInterface* Callback)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
@@ -51,7 +51,7 @@ VARIANT_BOOL CMapView::LoadMapState(LPCTSTR Filename, LPDISPATCH Callback)
 			IStopExecution* cb = NULL;
 			if (Callback)
 			{
-				Callback->QueryInterface(IID_IStopExecution, (void**)&cb);
+				//Callback->QueryInterface(IID_IStopExecution, (void**)&cb);
 			}
 			
 			bool result = DeserializeMapStateCore(root, nameW, VARIANT_TRUE, cb);
@@ -228,7 +228,7 @@ bool CMapView::DeserializeMapStateCore(CPLXMLNode* node, CStringW ProjectName, V
 	_identifier->put_OutlineColor(outlineColor);
 
 	CComPtr<IGeoProjection> gp = NULL;
-	ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&gp);
+	ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&gp);
 	s = CPLGetXMLValue( nodeState, "Projection", NULL );
 	if (s.GetLength() > 0)
 	{

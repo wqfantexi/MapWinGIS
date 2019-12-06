@@ -92,8 +92,8 @@ struct GlobalSettingsInfo
     {
         SysFreeString(emptyBstr);
         SysFreeString(gdalBstr);
-        if (callback)
-            callback->Release();
+        //if (callback)
+        //   callback->Release();
     }
 
     GlobalSettingsInfo::GlobalSettingsInfo()

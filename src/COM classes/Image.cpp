@@ -309,7 +309,7 @@ bool CImageClass::CheckForProxy()
 
 			VARIANT_BOOL vb;
 			IGridColorScheme* scheme = NULL;
-			ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&scheme);
+			ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&scheme);
 
 			CComBSTR bstrName(legendName);
 			CComBSTR bstrElement("GridColoringScheme");
@@ -962,7 +962,7 @@ STDMETHODIMP CImageClass::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 
 	if (_bitmapImage)
 	{
@@ -2028,7 +2028,7 @@ STDMETHODIMP CImageClass::put_Labels(ILabels* newVal)
 		return S_OK;
 	}
 	
-	ComHelper::SetRef(newVal, (IDispatch**)&_labels, false);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_labels, false);
 	return S_OK;
 };
 
@@ -3183,7 +3183,7 @@ STDMETHODIMP CImageClass::get_GridProxyColorScheme(IGridColorScheme** retVal)
 		if (Utility::FileExistsW(legendName))
 		{
 			IGridColorScheme* scheme = NULL;
-			ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&scheme);
+			ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&scheme);
 			VARIANT_BOOL vb;
 			CComBSTR bstrName(legendName);
 			CComBSTR bstrElement("GridColoringScheme");
@@ -3369,7 +3369,7 @@ STDMETHODIMP CImageClass::OpenAsGrid(IGrid** retVal)
 
 	if (Utility::FileExistsW(filename))
 	{
-		ComHelper::CreateInstance(tkInterface::idGrid, (IDispatch**)retVal);
+		ComHelper::CreateInstance(tkInterface::idGrid, (IMyInterface**)retVal);
 		VARIANT_BOOL vb;
 		USES_CONVERSION;
 
@@ -3489,7 +3489,7 @@ STDMETHODIMP CImageClass::get_Band(long bandIndex, IGdalRasterBand** retVal)
 		return S_OK;
 	}
 
-	ComHelper::CreateInstance(idGdalRasterBand, (IDispatch**)retVal);
+	ComHelper::CreateInstance(idGdalRasterBand, (IMyInterface**)retVal);
 	
 	RasterBandHelper::Cast(*retVal)->InjectBand(band);
 
@@ -3752,7 +3752,7 @@ STDMETHODIMP CImageClass::get_GdalDriver(IGdalDriver** pVal)
 	if (ds)
 	{
 		GDALDriver* driver = ds->GetDriver();
-		ComHelper::CreateInstance(idGdalDriver, (IDispatch**)pVal);
+		ComHelper::CreateInstance(idGdalDriver, (IMyInterface**)pVal);
 		((CGdalDriver*)*pVal)->Inject(driver);
 	}
 
@@ -4211,7 +4211,7 @@ STDMETHODIMP CImageClass::put_GeoProjection(IGeoProjection* newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
-	ComHelper::SetRef((IDispatch*)newVal, (IDispatch**)&_projection, false);
+	ComHelper::SetRef((IMyInterface*)newVal, (IMyInterface**)&_projection, false);
 
 	if (_sourceType == tkImageSourceType::istUninitialized ||
 		_sourceType == tkImageSourceType::istInMemory)

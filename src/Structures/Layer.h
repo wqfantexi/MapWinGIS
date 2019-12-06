@@ -87,7 +87,7 @@ public:
 
 private:
 	long _flags;
-	IDispatch * _object;
+	IMyInterface * _object;
 	bool _asyncLoading;
 	LayerType _type;
 
@@ -108,8 +108,8 @@ public:
 	// properties
 	void put_Visible(bool value) { _flags = value ? _flags | Visible : _flags & (0xFFFFFFFF ^ Visible); }
 	bool get_Visible() { return _flags & Visible; }
-	IDispatch* get_Object() { return _object; }
-	void set_Object(IDispatch* value)  { _object = value; }
+	IMyInterface* get_Object() { return _object; }
+	void set_Object(IMyInterface* value)  { _object = value; }
 	LayerType get_LayerType() { return _type; }
 	void put_LayerType(LayerType value) { _type = value; }
 	void put_AsyncLoading(bool value) { _asyncLoading = value; }

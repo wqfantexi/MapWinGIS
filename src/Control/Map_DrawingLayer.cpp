@@ -1117,7 +1117,7 @@ void CMapView::SetDrawingLabels(long DrawingLayerIndex, ILabels* newVal)
 	
 	if( IsValidDrawList(DrawingLayerIndex))
 	{	
-		ComHelper::SetRef((IDispatch*)newVal, (IDispatch**)&_allDrawLists[DrawingLayerIndex]->m_labels, false);
+		ComHelper::SetRef((IMyInterface*)newVal, (IMyInterface**)&_allDrawLists[DrawingLayerIndex]->m_labels, false);
 	}
 	else
 		ErrorMessage(tkINVALID_DRAW_HANDLE);

@@ -25,7 +25,7 @@ namespace Templates
 	    			
 			if( psa )
 			{
-				LPDISPATCH *pDispatch = NULL;
+				IMyInterface**pDispatch = NULL;
 				SafeArrayAccessData(psa,(void HUGEP* FAR*)(&pDispatch));
 				
 				for( int i = 0; i < (int)v->size(); i++)

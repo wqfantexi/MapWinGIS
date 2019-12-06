@@ -49,7 +49,7 @@ IGeoProjection* MercatorProjection::get_ServerProjection()
 
 	if (!_geoProjeciton) 
 	{
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&_geoProjeciton);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&_geoProjeciton);
 
 		VARIANT_BOOL vb;
 		_geoProjeciton->SetGoogleMercator(&vb);

@@ -32,12 +32,11 @@
 class ATL_NO_VTABLE CShapefileColorBreak : 
 	public CComObjectRootEx<CComObjectThreadModel>,
 	public CComCoClass<CShapefileColorBreak, &CLSID_ShapefileColorBreak>,
-	public IDispatchImpl<IShapefileColorBreak, &IID_IShapefileColorBreak, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+	public IMyInterfaceImpl<IShapefileColorBreak, &IID_IShapefileColorBreak, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
 {
 public:
 	CShapefileColorBreak()
 	{
-		_pUnkMarshaler = NULL;
 		VariantInit(&_startValue);
 		VariantInit(&_endValue);
 		_visible = VARIANT_TRUE;
@@ -52,7 +51,7 @@ public:
 
 	BEGIN_COM_MAP(CShapefileColorBreak)
 		COM_INTERFACE_ENTRY(IShapefileColorBreak)
-		COM_INTERFACE_ENTRY(IDispatch)
+		COM_INTERFACE_ENTRY(IMyInterface)
 		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
 	END_COM_MAP()
 

@@ -32,7 +32,7 @@
 // *********************************************************
 //		SnapShot()
 // *********************************************************
-LPDISPATCH CMapView::SnapShot(IExtents* BoundBox)
+IMyInterface* CMapView::SnapShot(IExtents* BoundBox)
 {
 	if( BoundBox == NULL )
 	{	
@@ -41,7 +41,7 @@ LPDISPATCH CMapView::SnapShot(IExtents* BoundBox)
 	}
 
 	IExtents * box = NULL;
-	BoundBox->QueryInterface(IID_IExtents, (void**)&box);
+	//BoundBox->QueryInterface(IID_IExtents, (void**)&box);
 
 	if( box == NULL )
 	{	
@@ -60,7 +60,7 @@ LPDISPATCH CMapView::SnapShot(IExtents* BoundBox)
 //		SnapShot2()
 // *********************************************************
 // use the indicated layer and zoom/width to determine the output size and clipping
-IDispatch* CMapView::SnapShot2(LONG ClippingLayerNbr, DOUBLE Zoom, long pWidth)
+IMyInterface* CMapView::SnapShot2(LONG ClippingLayerNbr, DOUBLE Zoom, long pWidth)
 {   
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -118,7 +118,7 @@ IDispatch* CMapView::SnapShot2(LONG ClippingLayerNbr, DOUBLE Zoom, long pWidth)
 // *********************************************************
 //A new snapshot method which works a bit better specifically for the printing engine
 //1. Draw to a back buffer, 2. Populate an Image object
-LPDISPATCH CMapView::SnapShot3(double left, double right, double top, double bottom, long Width)
+IMyInterface* CMapView::SnapShot3(double left, double right, double top, double bottom, long Width)
 {   
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
@@ -282,7 +282,7 @@ void CMapView::RestoreExtents()
 //		SnapShotCore()
 // *********************************************************
 // first 4 parameters - extents in map units; last 2 - the size of bitmap to draw this extents on
-IDispatch* CMapView::SnapShotCore(double left, double right, double top, double bottom, long Width, long Height, CDC* snapDC,
+IMyInterface* CMapView::SnapShotCore(double left, double right, double top, double bottom, long Width, long Height, CDC* snapDC,
 								  float offsetX, float offsetY, float clipX, float clipY, float clipWidth, float clipHeight)
 {
 	if (left == right || top == bottom)
@@ -350,7 +350,7 @@ IDispatch* CMapView::SnapShotCore(double left, double right, double top, double 
 	{
 		// create output
 		VARIANT_BOOL retval;
-		ComHelper::CreateInstance(idImage, (IDispatch**)&iimg);
+		ComHelper::CreateInstance(idImage, (IMyInterface**)&iimg);
 		iimg->SetImageBitsDC((long)snapDC->m_hDC,&retval);
 
 		double dx = (right-left)/(double)(_viewWidth);

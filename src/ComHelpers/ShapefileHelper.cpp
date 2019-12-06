@@ -74,7 +74,7 @@ bool ShapefileHelper::CloneNoFields(IShapefile* sfSource, IShapefile** retVal, S
                                     bool addShapeId)
 {
     IShapefile* sf = nullptr;
-    CoCreateInstance(CLSID_Shapefile, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)&sf);
+    //CoCreateInstance(CLSID_Shapefile, nullptr, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)&sf);
 
     VARIANT_BOOL vb;
     if (addShapeId)
@@ -630,7 +630,7 @@ void ShapefileHelper::InsertMwShapeIdField(IShapefile* sf)
     if (!sf) return;
 
     CComPtr<IField> shapeIDField = nullptr;
-    ComHelper::CreateInstance(idField, (IDispatch**)&shapeIDField);
+    ComHelper::CreateInstance(idField, (IMyInterface**)&shapeIDField);
 
     const CComBSTR bstr("MWShapeID");
     shapeIDField->put_Name(bstr);

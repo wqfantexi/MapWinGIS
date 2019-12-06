@@ -27,14 +27,9 @@
 #include "TableRow.h"
 #include "dbf.h"
 #include "CustomExpression.h"
-#include "_ITableEvents_CP.H"
+//#include "_ITableEvents_CP.H"
 
-class ATL_NO_VTABLE CTableClass : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CTableClass, &CLSID_Table>,
-	public IDispatchImpl<ITable, &IID_ITable, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>,
-	public IConnectionPointContainerImpl<CTableClass>,
-	public CProxy_ITableEvents<CTableClass>
+class CTableClass : public ITable
 {
 public:
 	CTableClass()
@@ -42,10 +37,8 @@ public:
 		_isEditingTable(FALSE), _dbfHandle(NULL), m_maxRowId(-1), _appendMode(false),
 		_appendStartShapeCount(-1)
 	{
-		_pUnkMarshaler = NULL;
 		_key = SysAllocString(L"");
 		_lastRecordIndex = -1;
-		gReferenceCounter.AddRef(tkInterface::idTable);
 	}
 
 	~CTableClass()
@@ -59,36 +52,7 @@ public:
 
 		if( _globalCallback )
 			_globalCallback->Release();
-		
-		gReferenceCounter.Release(tkInterface::idTable);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_TABLE)
-
-	DECLARE_NOT_AGGREGATABLE(CTableClass)
-
-	BEGIN_COM_MAP(CTableClass)
-		COM_INTERFACE_ENTRY(ITable)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY(IConnectionPointContainer)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 // ITable
 public:
@@ -263,12 +227,4 @@ public:
 	void MarkFieldsAreClean();
 	int GetFieldSourceIndex(int fieldIndex);
 	void SetFieldSourceIndex(int fieldIndex, int sourceIndex);
-
-public:
-	BEGIN_CONNECTION_POINT_MAP(CTableClass)
-		CONNECTION_POINT_ENTRY(__uuidof(_ITableEvents))
-	END_CONNECTION_POINT_MAP()
-	
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Table), CTableClass)

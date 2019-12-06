@@ -209,7 +209,7 @@ void CMapView::DrawImageGroups(const CRect& rcBounds, Gdiplus::Graphics* graphic
 		// creating a new temporary image		
 		IImage* imgGroup = NULL;
 		VARIANT_BOOL vbretval;
-		CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&imgGroup);
+		//CoCreateInstance(CLSID_Image,NULL,CLSCTX_INPROC_SERVER,IID_IImage,(void**)&imgGroup);
 		imgGroup->CreateNew(group->width, group->height, &vbretval);
 
 		if ( !vbretval )

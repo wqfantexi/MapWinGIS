@@ -747,7 +747,7 @@ STDMETHODIMP CUtils::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CUtils::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-		ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -814,7 +814,7 @@ STDMETHODIMP CUtils::GridMerge(VARIANT Grids, BSTR MergeFilename, VARIANT_BOOL I
 
 		//Determine if the IUnknown supports the IGrid Interface
 		IGrid * grid = NULL;
-		if (unknown->QueryInterface(IID_IGrid, (void**)&grid) != S_OK)
+		//if (unknown->QueryInterface(IID_IGrid, (void**)&grid) != S_OK)
 		{
 			*retval = NULL;
 			ErrorMessage(callback, tkINTERFACE_NOT_SUPPORTED);
@@ -827,8 +827,8 @@ STDMETHODIMP CUtils::GridMerge(VARIANT Grids, BSTR MergeFilename, VARIANT_BOOL I
 			}
 			return S_OK;
 		}
-		else
-			allGrids.push_back(grid);
+		//else
+		//	allGrids.push_back(grid);
 	}
 
 	if (allGrids.size() <= 0)
@@ -1008,7 +1008,7 @@ STDMETHODIMP CUtils::GridMerge(VARIANT Grids, BSTR MergeFilename, VARIANT_BOOL I
 	}
 
 	IGridHeader * final_header = NULL;
-	CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)&final_header);
+	//CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)&final_header);
 	final_header->put_NumberCols((long)((final_xurcenter - final_xllcenter) / final_dx) + 1);
 	final_header->put_NumberRows((long)((final_yurcenter - final_yllcenter) / final_dy) + 1);
 	final_header->put_dX(final_dx);
@@ -1019,7 +1019,7 @@ STDMETHODIMP CUtils::GridMerge(VARIANT Grids, BSTR MergeFilename, VARIANT_BOOL I
 	final_header->put_Projection(final_projection);
 
 	VARIANT_BOOL vbretval = FALSE;
-	CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
+	//CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
 	(*retval)->CreateNew(MergeFilename, final_header, final_dType, vndv, InRam, GrdFileType, cBack, &vbretval);
 	final_header->Release();
 
@@ -1124,7 +1124,7 @@ STDMETHODIMP CUtils::GridToGrid(IGrid *Grid, GridDataType OutDataType, ICallback
 	VariantInit(&vndv);
 	header->get_NodataValue(&vndv);
 
-	CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
+	//CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
 	VARIANT_BOOL vbretval;
 	(*retval)->CreateNew(m_globalSettings.emptyBstr, header, OutDataType, vndv, TRUE, UseExtension, cBack, &vbretval);
 	header->Release();
@@ -1189,7 +1189,7 @@ STDMETHODIMP CUtils::ShapeToShapeZ(IShapefile * Shapefile, IGrid *Grid, ICallbac
 	VARIANT_BOOL vbretval;
 	ShpfileType shapetype = SHP_NULLSHAPE;
 	Shapefile->get_ShapefileType(&shapetype);
-	CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
+	//CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
 	(*retval)->CreateNew(m_globalSettings.emptyBstr, shapetype, &vbretval);
 
 	long numFields = 0;
@@ -1271,7 +1271,7 @@ STDMETHODIMP CUtils::TinToShapefile(ITin *Tin, ShpfileType Type, ICallback *cBac
 	long percent = 0, newpercent = 0;
 	double total = numTriangles;
 
-	CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
+	//CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
 
 	if (Type == SHP_POLYGON || Type == SHP_POLYGONZ)
 	{
@@ -1281,7 +1281,7 @@ STDMETHODIMP CUtils::TinToShapefile(ITin *Tin, ShpfileType Type, ICallback *cBac
 
 		long pos = 0;
 		IField * field = NULL;
-		CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
+		//CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
 		CComBSTR bstrName("Tin");
 		field->put_Name(bstrName);
 		field->put_Type(INTEGER_FIELD);
@@ -1371,7 +1371,7 @@ STDMETHODIMP CUtils::TinToShapefile(ITin *Tin, ShpfileType Type, ICallback *cBac
 
 		long pos = 0;
 		IField * field = NULL;
-		CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
+		//CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
 
 		CComBSTR bstrName("Vertex");
 		field->put_Name(bstrName);
@@ -1515,9 +1515,9 @@ STDMETHODIMP CUtils::GridToShapefile(IGrid *Grid, IGrid *ConnectionGrid, ICallba
 
 	VARIANT_BOOL vbretval = FALSE;
 
-	CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)&_expand_grid);
+	//CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)&_expand_grid);
 	IGridHeader * expand_header = NULL;
-	CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)&expand_header);
+	//CoCreateInstance(CLSID_GridHeader, NULL, CLSCTX_INPROC_SERVER, IID_IGridHeader, (void**)&expand_header);
 	expand_header->put_dX(dx*.5);
 	expand_header->put_dY(dy*.5);
 	expand_header->put_XllCenter(xllCenter - dx * .5);
@@ -1801,12 +1801,12 @@ STDMETHODIMP CUtils::GridToShapefile(IGrid *Grid, IGrid *ConnectionGrid, ICallba
 	}
 
 	//Create the shapefile
-	CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
+	//CoCreateInstance(CLSID_Shapefile, NULL, CLSCTX_INPROC_SERVER, IID_IShapefile, (void**)retval);
 	(*retval)->CreateNew(m_globalSettings.emptyBstr, SHP_POLYGON, &vbretval);
 
 	long fieldpos = 0;
 	IField * field = NULL;
-	CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
+	//CoCreateInstance(CLSID_Field, NULL, CLSCTX_INPROC_SERVER, IID_IField, (void**)&field);
 	CComBSTR bstrName("PolygonID");
 	field->put_Name(bstrName);
 	field->put_Type(INTEGER_FIELD);
@@ -2743,7 +2743,7 @@ STDMETHODIMP CUtils::ShapefileToGrid(IShapefile * Shpfile, VARIANT_BOOL UseShape
 	if (!((CShapefile*)Shpfile)->ValidateInput(Shpfile, "ShapefileToGrid", "Shpfile", VARIANT_FALSE, "Utils"))
 		return S_OK;
 
-	CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
+	//CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)retval);
 
 	VARIANT_BOOL result = VARIANT_FALSE;
 	VARIANT vndv; //no data value
@@ -3435,7 +3435,7 @@ STDMETHODIMP CUtils::MergeImages(/*[in]*/SAFEARRAY* inputNames, /*[in]*/
 	for (int i = 0; i < cElements; i++)
 	{
 		IImage* img = nullptr;
-		CoCreateInstance(CLSID_Image, nullptr, CLSCTX_INPROC_SERVER, IID_IImage, reinterpret_cast<void**>(&img));
+		//CoCreateInstance(CLSID_Image, nullptr, CLSCTX_INPROC_SERVER, IID_IImage, reinterpret_cast<void**>(&img));
 		img->Open(pbstr[i], USE_FILE_EXTENSION, VARIANT_FALSE, nullptr, &vbretval);
 
 		if (vbretval)
@@ -3725,7 +3725,7 @@ STDMETHODIMP CUtils::ClipGridWithPolygon(BSTR inputGridfile, IShape* poly, BSTR 
 	}
 
 	IGrid* grid = NULL;
-	CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)&grid);
+	//CoCreateInstance(CLSID_Grid, NULL, CLSCTX_INPROC_SERVER, IID_IGrid, (void**)&grid);
 
 	if (grid)
 	{
@@ -4453,7 +4453,7 @@ STDMETHODIMP CUtils::GridStatisticsToShapefile(IGrid* grid, IShapefile* sf, VARI
 // Creates a new instance of the specified interface
 // Can be useful for scripting clients + creating objects in the background thread
 // though penalties for marshalling between apartments can significant
-STDMETHODIMP CUtils::CreateInstance(tkInterface interfaceId, IDispatch** retVal)
+STDMETHODIMP CUtils::CreateInstance(tkInterface interfaceId, IMyInterface** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 		return ComHelper::CreateInstance(interfaceId, retVal);
@@ -4849,7 +4849,7 @@ STDMETHODIMP CUtils::CopyNodataValues(BSTR sourceFilename, BSTR destFilename, VA
 // ********************************************************
 //     ErrorMsgFromObject()
 // ********************************************************
-STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
+STDMETHODIMP CUtils::ErrorMsgFromObject(IMyInterface * comClass, BSTR* retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 		if (!comClass)
@@ -4861,7 +4861,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	long errorCode;
 
 	ICharts* Charts = NULL;
-	comClass->QueryInterface(IID_ICharts, (void**)(&Charts));
+	//comClass->QueryInterface(IID_ICharts, (void**)(&Charts));
 	if (Charts)
 	{
 		Charts->get_LastErrorCode(&errorCode);
@@ -4871,7 +4871,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IColorScheme* ColorScheme = NULL;
-	comClass->QueryInterface(IID_IColorScheme, (void**)(&ColorScheme));
+	//comClass->QueryInterface(IID_IColorScheme, (void**)(&ColorScheme));
 	if (ColorScheme)
 	{
 		ColorScheme->get_LastErrorCode(&errorCode);
@@ -4881,7 +4881,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IESRIGridManager* ESRIGridManager = NULL;
-	comClass->QueryInterface(IID_IESRIGridManager, (void**)(&ESRIGridManager));
+	//comClass->QueryInterface(IID_IESRIGridManager, (void**)(&ESRIGridManager));
 	if (ESRIGridManager)
 	{
 		ESRIGridManager->get_LastErrorCode(&errorCode);
@@ -4893,7 +4893,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	//IExtents* Extents = NULL;
 
 	IField* Field = NULL;
-	comClass->QueryInterface(IID_IField, (void**)(&Field));
+	//comClass->QueryInterface(IID_IField, (void**)(&Field));
 	if (Field)
 	{
 		Field->get_LastErrorCode(&errorCode);
@@ -4903,7 +4903,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IGeoProjection* GeoProjection = NULL;
-	comClass->QueryInterface(IID_IGeoProjection, (void**)(&GeoProjection));
+	//comClass->QueryInterface(IID_IGeoProjection, (void**)(&GeoProjection));
 	if (GeoProjection)
 	{
 		GeoProjection->get_LastErrorCode(&errorCode);
@@ -4915,7 +4915,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	//IGlobalSettings* GlobalSettings = NULL;
 
 	IGrid* Grid = NULL;
-	comClass->QueryInterface(IID_IGrid, (void**)(&Grid));
+	//comClass->QueryInterface(IID_IGrid, (void**)(&Grid));
 	if (Grid)
 	{
 		Grid->get_LastErrorCode(&errorCode);
@@ -4925,7 +4925,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IGridColorBreak* GridColorBreak = NULL;
-	comClass->QueryInterface(IID_IGridColorBreak, (void**)(&GridColorBreak));
+	//comClass->QueryInterface(IID_IGridColorBreak, (void**)(&GridColorBreak));
 	if (GridColorBreak)
 	{
 		GridColorBreak->get_LastErrorCode(&errorCode);
@@ -4935,7 +4935,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IGridColorScheme* GridColorScheme = NULL;
-	comClass->QueryInterface(IID_IGridColorScheme, (void**)(&GridColorScheme));
+	//comClass->QueryInterface(IID_IGridColorScheme, (void**)(&GridColorScheme));
 	if (GridColorScheme)
 	{
 		GridColorScheme->get_LastErrorCode(&errorCode);
@@ -4945,7 +4945,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IGridHeader* GridHeader = NULL;
-	comClass->QueryInterface(IID_IGridHeader, (void**)(&GridHeader));
+	//comClass->QueryInterface(IID_IGridHeader, (void**)(&GridHeader));
 	if (GridHeader)
 	{
 		GridHeader->get_LastErrorCode(&errorCode);
@@ -4955,7 +4955,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IImage* Image = NULL;
-	comClass->QueryInterface(IID_IImage, (void**)(&Image));
+	//comClass->QueryInterface(IID_IImage, (void**)(&Image));
 	if (Image)
 	{
 		Image->get_LastErrorCode(&errorCode);
@@ -4967,7 +4967,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	//ILabelCategory* LabelCategory = NULL;
 
 	ILabels* Labels = NULL;
-	comClass->QueryInterface(IID_ILabels, (void**)(&Labels));
+	//comClass->QueryInterface(IID_ILabels, (void**)(&Labels));
 	if (Labels)
 	{
 		Labels->get_LastErrorCode(&errorCode);
@@ -4977,7 +4977,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	ILinePattern* LinePattern = NULL;
-	comClass->QueryInterface(IID_ILinePattern, (void**)(&LinePattern));
+	//comClass->QueryInterface(IID_ILinePattern, (void**)(&LinePattern));
 	if (LinePattern)
 	{
 		LinePattern->get_LastErrorCode(&errorCode);
@@ -4991,7 +4991,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	//IMeasuring* Measuring = NULL;
 
 	IPoint* Point = NULL;
-	comClass->QueryInterface(IID_IPoint, (void**)(&Point));
+	//comClass->QueryInterface(IID_IPoint, (void**)(&Point));
 	if (Point)
 	{
 		Point->get_LastErrorCode(&errorCode);
@@ -5001,7 +5001,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IShape* Shape = NULL;
-	comClass->QueryInterface(IID_IShape, (void**)(&Shape));
+	//comClass->QueryInterface(IID_IShape, (void**)(&Shape));
 	if (Shape)
 	{
 		Shape->get_LastErrorCode(&errorCode);
@@ -5011,7 +5011,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IShapeDrawingOptions* ShapeDrawingOptions = NULL;
-	comClass->QueryInterface(IID_IShapeDrawingOptions, (void**)(&ShapeDrawingOptions));
+	//comClass->QueryInterface(IID_IShapeDrawingOptions, (void**)(&ShapeDrawingOptions));
 	if (ShapeDrawingOptions)
 	{
 		ShapeDrawingOptions->get_LastErrorCode(&errorCode);
@@ -5021,7 +5021,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IShapefile* Shapefile = NULL;
-	comClass->QueryInterface(IID_IShapefile, (void**)(&Shapefile));
+	//comClass->QueryInterface(IID_IShapefile, (void**)(&Shapefile));
 	if (Shapefile)
 	{
 		Shapefile->get_LastErrorCode(&errorCode);
@@ -5031,7 +5031,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IShapefileCategories* ShapefileCategories = NULL;
-	comClass->QueryInterface(IID_IShapefileCategories, (void**)(&ShapefileCategories));
+	//comClass->QueryInterface(IID_IShapefileCategories, (void**)(&ShapefileCategories));
 	if (ShapefileCategories)
 	{
 		ShapefileCategories->get_LastErrorCode(&errorCode);
@@ -5057,7 +5057,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 #endif
 
 	IShapeNetwork* ShapeNetwork = NULL;
-	comClass->QueryInterface(IID_IShapeNetwork, (void**)(&ShapeNetwork));
+	//comClass->QueryInterface(IID_IShapeNetwork, (void**)(&ShapeNetwork));
 	if (ShapeNetwork)
 	{
 		ShapeNetwork->get_LastErrorCode(&errorCode);
@@ -5067,7 +5067,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	CComPtr<ITable> Table = NULL;
-	comClass->QueryInterface(IID_ITable, (void**)(&Table));
+	//comClass->QueryInterface(IID_ITable, (void**)(&Table));
 	if (Table)
 	{
 		Table->get_LastErrorCode(&errorCode);
@@ -5076,7 +5076,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	ITileProviders* TileProviders = NULL;
-	comClass->QueryInterface(IID_ITileProviders, (void**)(&TileProviders));
+	//comClass->QueryInterface(IID_ITileProviders, (void**)(&TileProviders));
 	if (TileProviders)
 	{
 		TileProviders->get_LastErrorCode(&errorCode);
@@ -5086,7 +5086,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	ITin* Tin = NULL;
-	comClass->QueryInterface(IID_ITin, (void**)(&Tin));
+	//comClass->QueryInterface(IID_ITin, (void**)(&Tin));
 	if (Tin)
 	{
 		Tin->get_LastErrorCode(&errorCode);
@@ -5096,7 +5096,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IUtils* Utils = NULL;
-	comClass->QueryInterface(IID_IUtils, (void**)(&Utils));
+	//comClass->QueryInterface(IID_IUtils, (void**)(&Utils));
 	if (Utils)
 	{
 		Utils->get_LastErrorCode(&errorCode);
@@ -5106,7 +5106,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IVector* Vector = NULL;
-	comClass->QueryInterface(IID_IVector, (void**)(&Vector));
+	//comClass->QueryInterface(IID_IVector, (void**)(&Vector));
 	if (Vector)
 	{
 		Vector->get_LastErrorCode(&errorCode);
@@ -5116,7 +5116,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	}
 
 	IFileManager* FileManager = NULL;
-	comClass->QueryInterface(IID_IFileManager, (void**)(&FileManager));
+	//comClass->QueryInterface(IID_IFileManager, (void**)(&FileManager));
 	if (FileManager)
 	{
 		FileManager->get_LastErrorCode(&errorCode);
@@ -5128,7 +5128,7 @@ STDMETHODIMP CUtils::ErrorMsgFromObject(IDispatch * comClass, BSTR* retVal)
 	//IShapeValidationInfo* ShapeValidationInfo = NULL;
 
 	IFieldStatOperations* FieldStatOperations = NULL;
-	comClass->QueryInterface(IID_IFieldStatOperations, (void**)(&FieldStatOperations));
+	//comClass->QueryInterface(IID_IFieldStatOperations, (void**)(&FieldStatOperations));
 	if (FieldStatOperations)
 	{
 		FieldStatOperations->get_LastErrorCode(&errorCode);
@@ -5160,7 +5160,7 @@ HRESULT CUtils::TileProjectionToGeoProjectionCore(tkTileProjection projection, V
 	else
 	{
 		IGeoProjection* gp = NULL;
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&gp);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&gp);
 		VARIANT_BOOL vb;
 		switch (projection)
 		{

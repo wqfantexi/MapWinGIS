@@ -32,7 +32,7 @@
 IPoint* CShapePoint::get_Point()
 {
 	IPoint* pnt = NULL;
-	CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&pnt);
+	//CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&pnt);
 	pnt->put_X(_x);
 	pnt->put_Y(_y);
 	pnt->put_Z(_z);

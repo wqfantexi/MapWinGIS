@@ -31,30 +31,20 @@
 #include "PrefetchManager.h"
 using namespace std;
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
-class ATL_NO_VTABLE CTiles :
-    public CComObjectRootEx<CComObjectThreadModel>,
-    public CComCoClass<CTiles, &CLSID_Tiles>,
-    public IDispatchImpl<ITiles, &IID_ITiles, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CTiles : public ITiles
 {
 public:
     CTiles()
         : _manager(true), _mercatorProjection(nullptr), _reloadNeeded(true)
     {
-        _pUnkMarshaler = nullptr;
         _key = SysAllocString(L"");
         _globalCallback = nullptr;
         _lastErrorCode = tkNO_ERROR;
 
-        ComHelper::CreateInstance(idTileProviders, (IDispatch**)&_providers);
+        ComHelper::CreateInstance(idTileProviders, (IMyInterface**)&_providers);
         ((CTileProviders*)_providers)->put_Tiles(this);
 
         SetDefaults();
-
-        gReferenceCounter.AddRef(tkInterface::idTiles);
     }
 
     ~CTiles()
@@ -67,8 +57,6 @@ public:
         {
             _mercatorProjection->Release();
         }
-
-        gReferenceCounter.Release(tkInterface::idTiles);
     }
 
     void ClearAll()
@@ -91,30 +79,6 @@ public:
         _minScaleToCache = 0;
         _maxScaleToCache = 100;
     }
-
-    DECLARE_REGISTRY_RESOURCEID(IDR_TILES)
-
-BEGIN_COM_MAP(CTiles)
-            COM_INTERFACE_ENTRY(ITiles)
-            COM_INTERFACE_ENTRY(IDispatch)
-            COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-    END_COM_MAP()
-
-    DECLARE_PROTECT_FINAL_CONSTRUCT()
-DECLARE_GET_CONTROLLING_UNKNOWN()
-
-    HRESULT FinalConstruct()
-    {
-        return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-    }
-
-    void FinalRelease()
-    {
-        _pUnkMarshaler.Release();
-    }
-
-    CComPtr<IUnknown> _pUnkMarshaler;
-
 public:
     STDMETHOD(get_LastErrorCode)(/*[out, retval]*/ long* pVal);
     STDMETHOD(get_ErrorMsg)(/*[in]*/ long ErrorCode, /*[out, retval]*/ BSTR* pVal);
@@ -215,5 +179,3 @@ public:
     BaseProjection* get_Projection() { return _provider->get_Projection(); }
     void Stop();
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Tiles), CTiles)

@@ -110,7 +110,7 @@ class CShapePointCOM: public IShapePoint
 public:
 	CShapePointCOM(void)
 	{
-		CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)&pnt);
+		
 	}
 
 	virtual ~CShapePointCOM(void)

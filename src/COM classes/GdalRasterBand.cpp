@@ -399,7 +399,7 @@ STDMETHODIMP CGdalRasterBand::GetDefaultHistogram(VARIANT_BOOL forceCalculate, I
 		return S_OK;
 	}
 
-	ComHelper::CreateInstance(idHistogram, (IDispatch**)retVal);
+	ComHelper::CreateInstance(idHistogram, (IMyInterface**)retVal);
 
 	((CHistogram*)*retVal)->Inject(numBuckets, minValue, maxValue, values, true);
 
@@ -438,7 +438,7 @@ STDMETHODIMP CGdalRasterBand::GetHistogram(DOUBLE minValue, DOUBLE maxValue, LON
 		return S_OK;
 	}
 
-	ComHelper::CreateInstance(idHistogram, (IDispatch**)retVal);
+	ComHelper::CreateInstance(idHistogram, (IMyInterface**)retVal);
 
 	((CHistogram*)*retVal)->Inject(numBuckets, minValue, maxValue, values, false);
 
@@ -470,7 +470,7 @@ STDMETHODIMP CGdalRasterBand::get_Overview(LONG overviewIndex, IGdalRasterBand**
 
 	if (overview)
 	{
-		ComHelper::CreateInstance(idGdalRasterBand, (IDispatch**)pVal);
+		ComHelper::CreateInstance(idGdalRasterBand, (IMyInterface**)pVal);
 		RasterBandHelper::Cast(*pVal)->InjectBand(overview);
 	}
 
@@ -550,13 +550,13 @@ STDMETHODIMP CGdalRasterBand::Classify(double minValue, double maxValue, tkClass
 IGridColorScheme* CGdalRasterBand::GenerateEqualIntervalColorScheme(double minValue, double maxValue, int numBreaks)
 {
 	IGridColorScheme* scheme = NULL;
-	ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&scheme);
+	ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&scheme);
 
 	double step = (maxValue - minValue) / numBreaks;
 	for (int i = 0; i < numBreaks; i++)
 	{
 		IGridColorBreak* br = NULL;
-		ComHelper::CreateInstance(idGridColorBreak, (IDispatch**)&br);
+		ComHelper::CreateInstance(idGridColorBreak, (IMyInterface**)&br);
 		br->put_LowValue(minValue + i * step);
 		br->put_HighValue(minValue + (i + 1) * step);
 		scheme->InsertBreak(br);
@@ -582,13 +582,13 @@ IGridColorScheme* CGdalRasterBand::GenerateUniqueValuesColorScheme(GDALDataType 
 	}
 
 	IGridColorScheme* scheme = NULL;
-	ComHelper::CreateInstance(idGridColorScheme, (IDispatch**)&scheme);
+	ComHelper::CreateInstance(idGridColorScheme, (IMyInterface**)&scheme);
 
 	set<T>::iterator it = values.begin();
 	while (it != values.end())
 	{
 		IGridColorBreak* br = NULL;
-		ComHelper::CreateInstance(idGridColorBreak, (IDispatch**)&br);
+		ComHelper::CreateInstance(idGridColorBreak, (IMyInterface**)&br);
 		double val = static_cast<double>(*it);
 		br->put_LowValue(val);
 		br->put_HighValue(val);

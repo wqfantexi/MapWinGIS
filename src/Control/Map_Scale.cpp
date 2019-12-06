@@ -1902,7 +1902,7 @@ void CMapView::SetProjection(tkMapProjection projection)
 	tkTransformationMode prevMode = _transformationMode;
 
 	IGeoProjection* p = NULL;
-	ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&p);
+	ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&p);
 	if (p)
 	{
 		VARIANT_BOOL vb;

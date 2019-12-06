@@ -84,7 +84,7 @@ STDMETHODIMP CExpression::get_SupportedFunction(LONG functionIndex, IFunction** 
 	}
 
 	IFunction* fn = NULL;
-	ComHelper::CreateInstance(idFunction, (IDispatch**)&fn);
+	ComHelper::CreateInstance(idFunction, (IMyInterface**)&fn);
 	((CFunction*)fn)->Inject(list[functionIndex]);
 
 	*pVal = fn;
@@ -126,7 +126,7 @@ STDMETHODIMP CExpression::ParseForTable(BSTR expr, ITable* table, VARIANT_BOOL* 
 
 	Clear();
 
-	ComHelper::SetRef(table, (IDispatch**)&_table);
+	ComHelper::SetRef(table, (IMyInterface**)&_table);
 
 	_expression.ReadFieldNames(table);
 

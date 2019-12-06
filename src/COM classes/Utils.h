@@ -41,15 +41,11 @@ struct BreakVal
 #define GEOTRSFRM_NS_RES               5
 
 // CUtils
-class ATL_NO_VTABLE CUtils : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CUtils, &CLSID_Utils>,
-	public IDispatchImpl<IUtils, &IID_IUtils, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CUtils : public IUtils
 {
 public:
 	CUtils()
 	{
-		_pUnkMarshaler = NULL;
 		_pip_left = 0;
 		_pip_right = 0;
 		_pip_top = 0;
@@ -88,33 +84,6 @@ public:
 		}
 		::SysFreeString(_key);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_UTILS)
-
-	DECLARE_NOT_AGGREGATABLE(CUtils)
-
-	BEGIN_COM_MAP(CUtils)
-		COM_INTERFACE_ENTRY(IUtils)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 
 // IUtils
 public:
@@ -161,7 +130,7 @@ public:
 	STDMETHOD(ClipGridWithPolygon2)(IGrid* grid, IShape* poly, BSTR resultGridfile, VARIANT_BOOL keepExtents, VARIANT_BOOL* retVal);
 	STDMETHOD(GridStatisticsToShapefile)(IGrid* grid, IShapefile* sf, VARIANT_BOOL selectedOnly, VARIANT_BOOL overwriteFields, VARIANT_BOOL useCenterWithinMethod, VARIANT_BOOL* retVal);
 	STDMETHOD(Polygonize)(/*[in]*/ BSTR pszSrcFilename, /*[in]*/ BSTR pszDstFilename, /*[in, optional, defaultvalue(1)]*/ int iSrcBand, /*[in, optional, defaultvalue(FALSE)]*/ VARIANT_BOOL NoMask, /*[in, optional, defaultvalue(NULL)]*/ BSTR pszMaskFilename, /*[in, optional, defaultvalue("GML")]*/ BSTR pszOGRFormat, /*[in, optional, defaultvalue("out")]*/ BSTR pszDstLayerName, /*[in, optional, defaultvalue("DN")]*/ BSTR pszPixValFieldName, /*[in, optional, defaultvalue(NULL)]*/ ICallback * cBack, /*[out, retval]*/ VARIANT_BOOL * retval);
-	STDMETHOD(CreateInstance)(tkInterface interfaceId, IDispatch** retVal);
+	STDMETHOD(CreateInstance)(tkInterface interfaceId, IMyInterface** retVal);
 	STDMETHOD(CopyNodataValues)(BSTR sourceFilename, BSTR destFilename, VARIANT_BOOL* retVal);
 	STDMETHOD(ColorByName)(tkMapColor name, OLE_COLOR* retVal);
 	STDMETHOD(ConvertDistance)(tkUnitsOfMeasure sourceUnit, tkUnitsOfMeasure targetUnit, DOUBLE* value, VARIANT_BOOL* retval);
@@ -170,7 +139,7 @@ public:
 	STDMETHOD(GridStatisticsForPolygon)(IGrid* grid, IGridHeader* header, IExtents* gridExtents, IShape* shape, 
 										  double noDataValue, double* meanValue, double* minValue, double* maxValue, VARIANT_BOOL* retVal);
 	STDMETHOD(GridToImage2)(IGrid * Grid, IGridColorScheme * ci, tkGridProxyFormat imageFormat, VARIANT_BOOL inRam, ICallback* cBack, IImage ** retval);
-	STDMETHOD(ErrorMsgFromObject)(IDispatch * comClass, BSTR* retVal);
+	STDMETHOD(ErrorMsgFromObject)(IMyInterface * comClass, BSTR* retVal);
 	STDMETHOD(TileProjectionToGeoProjection)(tkTileProjection projection, IGeoProjection** retVal);
 	STDMETHOD(get_ComUsageReport)(VARIANT_BOOL unreleasedOnly, BSTR* retVal);
 	STDMETHOD(CalculateRaster)(SAFEARRAY* filenames, BSTR expression, BSTR outputFilename, BSTR gdalOutputFormat, 
@@ -339,6 +308,4 @@ public:
 };
 
 double CalcPolyGeodesicArea(std::vector<Point2D>& points);
-
-OBJECT_ENTRY_AUTO(__uuidof(Utils), CUtils)
 

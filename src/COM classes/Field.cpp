@@ -189,7 +189,7 @@ STDMETHODIMP CField::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CField::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -233,7 +233,7 @@ STDMETHODIMP CField::Clone(/*[out, retval]*/ IField** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
 	IField* fld = NULL;
-	CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&fld);
+	//CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&fld);
 	fld->put_Precision(_precision);
 	fld->put_Type(_type);
 	fld->put_Name(_name);

@@ -905,7 +905,7 @@ IShape* CustomExpression::get_Shape()
 
 void CustomExpression::put_Shape(IShape* shape)
 {
-	ComHelper::SetRef(shape, (IDispatch**)&_shape, true);
+	ComHelper::SetRef(shape, (IMyInterface**)&_shape, true);
 }
 
 void CustomExpression::put_FieldValue(int FieldId, BSTR newVal) 

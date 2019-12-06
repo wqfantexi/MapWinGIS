@@ -5,19 +5,11 @@
 #include "afxmt.h"
 #include "OgrLoader.h"
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
-class ATL_NO_VTABLE COgrLayer :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<COgrLayer, &CLSID_OgrLayer>,
-	public IDispatchImpl<IOgrLayer, &IID_IOgrLayer, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class COgrLayer : public IOgrLayer
 {
 public:
 	COgrLayer()
 	{
-		_pUnkMarshaler = NULL;
 		_globalCallback = NULL;
 		_key = SysAllocString(L"");
 		_lastErrorCode = tkNO_ERROR;
@@ -33,7 +25,6 @@ public:
 		_activeShapeType = SHP_NULLSHAPE;
 		_externalDatasource = VARIANT_FALSE;
 		_loader.SetMaxCacheCount(m_globalSettings.ogrLayerMaxFeatureCount);
-		gReferenceCounter.AddRef(tkInterface::idOgrLayer);
 	}
 	~COgrLayer()
 	{
@@ -43,32 +34,7 @@ public:
 		Close();
 		if (_globalCallback)
 			_globalCallback->Release();
-		gReferenceCounter.Release(tkInterface::idOgrLayer);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_OGRLAYER)
-
-	BEGIN_COM_MAP(COgrLayer)
-		COM_INTERFACE_ENTRY(IOgrLayer)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 public:
 	STDMETHOD(get_ErrorMsg)(/*[in]*/ long ErrorCode, /*[out, retval]*/ BSTR *pVal);
@@ -185,4 +151,3 @@ public:
 	bool InjectLayer(GDALDataset* ds, int layerIndex, CStringW connection, VARIANT_BOOL forUpdate);
 	void GetMsSqlShapeTypes(vector<ShpfileType>& types);
 };
-OBJECT_ENTRY_AUTO(__uuidof(OgrLayer), COgrLayer)

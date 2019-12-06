@@ -28,15 +28,11 @@ public:
 	int position;
 };
 
-class ATL_NO_VTABLE CImageClass : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CImageClass, &CLSID_Image>,
-	public IDispatchImpl<IImage, &IID_IImage, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CImageClass : public IImage
 {
 public:
 	CImageClass::CImageClass() : _bitsPerPixel(32)
 	{
-		_pUnkMarshaler = NULL;
 		_globalCallback = NULL;
 		_imageData = NULL;
 		
@@ -48,8 +44,8 @@ public:
 
 		_key = SysAllocString(L"");
 
-		ComHelper::CreateInstance(idLabels, (IDispatch**)&_labels);
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&_projection);
+		ComHelper::CreateInstance(idLabels, (IMyInterface**)&_labels);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&_projection);
 		
 		_bitmapImage = NULL;
 		_raster = NULL;
@@ -73,8 +69,6 @@ public:
 		_iconGdiPlus = NULL;
 
 		SetDefaults();
-		
-		gReferenceCounter.AddRef(tkInterface::idImage);
 	}
 	
 	void CImageClass::SetDefaults()
@@ -129,35 +123,7 @@ public:
 			delete _iconGdiPlus;
 			_iconGdiPlus = NULL;
 		}
-		gReferenceCounter.Release(tkInterface::idImage);
 	}
-
-public:
-	DECLARE_REGISTRY_RESOURCEID(IDR_IMAGE)
-
-	DECLARE_NOT_AGGREGATABLE(CImageClass)
-
-	BEGIN_COM_MAP(CImageClass)
-		COM_INTERFACE_ENTRY(IImage)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 // IImage
 public:
@@ -473,7 +439,4 @@ public:
 	void SetScreenBitmap(ScreenBitmap* value) { _screenBitmap = value; }
 
 };
-OBJECT_ENTRY_AUTO(__uuidof(Image), CImageClass)
-
-
 

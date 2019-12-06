@@ -55,7 +55,7 @@ void CGdalDriverManager::CreateDriverInstance(GDALDriver* driver, IGdalDriver** 
 {
 	if (driver)
 	{
-		ComHelper::CreateInstance(idGdalDriver, (IDispatch**)pVal);
+		ComHelper::CreateInstance(idGdalDriver, (IMyInterface**)pVal);
 		((CGdalDriver*)*pVal)->Inject(driver);
 	}
 }

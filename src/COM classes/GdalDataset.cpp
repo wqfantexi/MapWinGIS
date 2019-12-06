@@ -42,7 +42,7 @@ STDMETHODIMP CGdalDataset::get_Driver(IGdalDriver** pVal)
 	GDALDriver* driver = _dataset->GetDriver();
 	if (driver) 
 	{
-		ComHelper::CreateInstance(idGdalDriver, (IDispatch**)pVal);
+		ComHelper::CreateInstance(idGdalDriver, (IMyInterface**)pVal);
 		((CGdalDriver*)*pVal)->Inject(driver);
 	}
 

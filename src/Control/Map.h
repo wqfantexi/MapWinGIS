@@ -163,11 +163,11 @@ public:
 	afx_msg long GetNumLayers();
 	afx_msg long GetLastErrorCode();	
 	afx_msg short GetIsLocked();
-	afx_msg LPDISPATCH GetGetObject(long LayerHandle);
+	afx_msg IMyInterface* GetGetObject(long LayerHandle);
 	afx_msg BSTR GetErrorMsg(long ErrorCode);
 	afx_msg long GetLayerPosition(long LayerHandle);
 	afx_msg long GetLayerHandle(long LayerPosition);
-	afx_msg LPDISPATCH GetColorScheme(long LayerHandle);
+	afx_msg IMyInterface* GetColorScheme(long LayerHandle);
 	afx_msg VARIANT_BOOL get_Fileame(LONG LayerHandle, BSTR* layerName );
 
 	#pragma endregion
@@ -255,7 +255,7 @@ public:
 	afx_msg void SetLayerDynamicVisibility(LONG LayerHandle, VARIANT_BOOL newVal);
 
 	afx_msg VARIANT_BOOL SaveMapState(LPCTSTR Filename, VARIANT_BOOL RelativePaths, VARIANT_BOOL Overwrite);
-	afx_msg VARIANT_BOOL LoadMapState(LPCTSTR Filename, LPDISPATCH Callback);
+	afx_msg VARIANT_BOOL LoadMapState(LPCTSTR Filename, IMyInterface* Callback);
 
 	afx_msg VARIANT_BOOL SaveLayerOptions(LONG LayerHandle, LPCTSTR OptionsName, VARIANT_BOOL Overwrite, LPCTSTR Description);
 	afx_msg VARIANT_BOOL LoadLayerOptions(LONG LayerHandle, LPCTSTR OptionsName, BSTR* Description);
@@ -304,7 +304,7 @@ public:
 	// Obsolete properties
 	#pragma region Obsolete properties
 	afx_msg long get_UDPointImageListCount(long LayerHandle);
-	afx_msg IDispatch* get_UDPointImageListItem(long LayerHandle, long ImageIndex);
+	afx_msg IMyInterface* get_UDPointImageListItem(long LayerHandle, long ImageIndex);
 	
 	afx_msg BSTR GetDrawingKey(long DrawHandle);
 	afx_msg void SetDrawingKey(long DrawHandle, LPCTSTR lpszNewValue);
@@ -399,8 +399,8 @@ public:
 	afx_msg long GetUDFillStipple(long LayerHandle, long StippleRow);
 	afx_msg void SetUDFillStipple(long LayerHandle, long StippleRow, long nNewValue);
 
-	afx_msg LPDISPATCH GetUDPointType(long LayerHandle);
-	afx_msg void SetUDPointType(long LayerHandle, LPDISPATCH newValue);
+	afx_msg IMyInterface* GetUDPointType(long LayerHandle);
+	afx_msg void SetUDPointType(long LayerHandle, IMyInterface* newValue);
 
 	afx_msg	long GetLineSeparationFactor();
 	afx_msg void SetLineSeparationFactor(long sepFactor);
@@ -471,7 +471,7 @@ public:
 	afx_msg void Redraw3(tkRedrawType redrawType, VARIANT_BOOL reloadTiles);
 	afx_msg void Redraw2(tkRedrawType redrawType);
 	afx_msg void Redraw();
-	afx_msg long AddLayer(LPDISPATCH Object, BOOL Visible);
+	afx_msg long AddLayer(IMyInterface* Object, BOOL Visible);
 	afx_msg void RemoveLayer(long LayerHandle);
 	afx_msg void RemoveLayerWithoutClosing(long LayerHandle);
 	afx_msg void RemoveAllLayers();
@@ -491,8 +491,8 @@ public:
 	
 	afx_msg void ClearDrawing(long DrawHandle);
 	afx_msg void ClearDrawings();
-	afx_msg LPDISPATCH SnapShot(IExtents* BoundBox);
-	afx_msg BOOL ApplyLegendColors(LPDISPATCH Legend);
+	afx_msg IMyInterface* SnapShot(IExtents* BoundBox);
+	afx_msg BOOL ApplyLegendColors(IMyInterface* Legend);
 	afx_msg void LockWindow(short LockMode);
 	afx_msg void Resize(long Width, long Height);
 	afx_msg void ShowToolTip(LPCTSTR Text, long Milliseconds);
@@ -505,7 +505,7 @@ public:
 	afx_msg void LayerFont(long LayerHandle, LPCTSTR FontName, long FontSize);
 	afx_msg void LayerFontEx(long LayerHandle, LPCTSTR FontName, long FontSize, BOOL isBold, BOOL isItalic, BOOL isUnderline);//ajp (30/11/07)
 	afx_msg void AddLabelEx(long LayerHandle, LPCTSTR Text, OLE_COLOR Color, double x, double y, short hJustification, double Rotation);
-	afx_msg long set_UDPointImageListAdd(long LayerHandle, LPDISPATCH newValue);
+	afx_msg long set_UDPointImageListAdd(long LayerHandle, IMyInterface* newValue);
 	afx_msg long set_UDPointFontCharListAdd(long LayerHandle, long newValue, OLE_COLOR color);
     afx_msg void set_UDPointFontCharFont(long LayerHandle, LPCTSTR FontName, float FontSize, BOOL isBold, BOOL isItalic, BOOL isUnderline);
 	afx_msg void set_UDPointFontCharFontSize(long LayerHandle, float FontSize);
@@ -550,9 +550,9 @@ public:
 	afx_msg void DrawWidePolygonEx(LONG LayerHandle, VARIANT *xPoints, VARIANT *yPoints, long numPoints, OLE_COLOR color, VARIANT_BOOL fill, short OutlineWidth);
 	afx_msg BSTR SerializeLayer(LONG LayerHandle);
 	afx_msg VARIANT_BOOL DeserializeLayer(LONG LayerHandle, LPCTSTR newVal);
-	afx_msg IDispatch* SnapShot2(LONG ClippingLayerNbr, DOUBLE Zoom, long pWidth);
-	afx_msg IDispatch* SnapShot3(double left, double right, double top, double bottom, long Width);
-	afx_msg VARIANT_BOOL SetImageLayerColorScheme(LONG LayerHandle, IDispatch* ColorScheme);
+	afx_msg IMyInterface* SnapShot2(LONG ClippingLayerNbr, DOUBLE Zoom, long pWidth);
+	afx_msg IMyInterface* SnapShot3(double left, double right, double top, double bottom, long Width);
+	afx_msg VARIANT_BOOL SetImageLayerColorScheme(LONG LayerHandle, IMyInterface* ColorScheme);
 	afx_msg void UpdateImage(LONG LayerHandle);
 	afx_msg VARIANT_BOOL DeserializeMapState(LPCTSTR State, VARIANT_BOOL LoadLayers, LPCTSTR BasePath);
 	afx_msg BSTR SerializeMapState(VARIANT_BOOL RelativePaths, LPCTSTR BasePath);
@@ -676,7 +676,7 @@ public:
 		{FireEvent(eventidMeasuringChanged,EVENT_PARAM(VTS_I4), action);}
 	void FireBeforeShapeEdit(LONG layerHandle, LONG shapeIndex, tkMwBoolean* Cancel)
 		{FireEvent(eventidBeforeShapeEdit, EVENT_PARAM(VTS_I4 VTS_I4 VTS_PI4), layerHandle, shapeIndex, Cancel);	}
-	void FireValidateShape(LONG LayerHandle, IDispatch* Shape, tkMwBoolean* Cancel)	
+	void FireValidateShape(LONG LayerHandle, IMyInterface* Shape, tkMwBoolean* Cancel)
 		{FireEvent(eventidValidateShape, EVENT_PARAM(VTS_I4 VTS_DISPATCH VTS_PI4), LayerHandle, Shape, Cancel);	}
 	void FireBeforeVertexDigitized(DOUBLE* pointX, DOUBLE* pointY)
 		{FireEvent(eventidBeforeVertexDigitized, EVENT_PARAM(VTS_PR8 VTS_PR8), pointX, pointY); }
@@ -1051,7 +1051,7 @@ private:
 	void DrawLists(const CRect & rcBounds, Gdiplus::Graphics* graphics, tkDrawReferenceList listType);
 	void DrawDrawing(Gdiplus::Graphics* graphics, DrawList * dlist);
 	void DrawDynamic(CDC* pdc, const CRect& rcBounds, const CRect& rcInvalid, bool drawBackBuffer = false, float offsetX = 0.0f, float offsetY = 0.0f);
-	IDispatch* SnapShotCore(double left, double right, double top, double bottom, long Width, long Height, 
+	IMyInterface* SnapShotCore(double left, double right, double top, double bottom, long Width, long Height, 
 								  CDC* snapDC = NULL, float offsetX = 0.0f, float offsetY = 0.0f,
 								  float clipX = 0.0f, float clipY = 0.0f, float clipWidth = 0.0f, float clipHeight = 0.0f);
 
@@ -1177,7 +1177,7 @@ private:
 	void HandleLButtonDownSelection(CPoint& point, long vbflags);
 	void ZoomToEditor();
 	void OnCursorModeChangedCore(bool clearEditor);
-	void AttachGlobalCallbackToLayers(IDispatch* object);
+	void AttachGlobalCallbackToLayers(IMyInterface* object);
 	Point2D GetDraggingProjOffset();
 	void HandleOnLButtonMoveOrRotate(long x, long y);
 	void DrawMovingShapes(Gdiplus::Graphics* g, const CRect& rect, bool dynamicBuffer);
@@ -1213,7 +1213,7 @@ private:
 	bool ReprojectLayer(Layer* layer, int layerHandle);
 	void StartDragging(DraggingOperation operation);
 	void DrawImageLayer(const CRect& rcBounds, Layer* l, Gdiplus::Graphics* graphics, CImageDrawer& imgDrawer);
-	long AddSingleLayer(LPDISPATCH Object, BOOL pVisible);
+	long AddSingleLayer(IMyInterface* Object, BOOL pVisible);
 	void OnDrawingLayersChanged();
 	bool HandleOnCopyrightMouseMove(CPoint point);
 	void StartMouseTracking();
@@ -1270,7 +1270,7 @@ public:
 	virtual void _PixelToProjection(double pixelX, double pixelY, double* projX, double* projY){ PixelToProjection(pixelX, pixelY, *projX, *projY); }
 	virtual void _FireBeforeDeleteShape(tkDeleteTarget target, tkMwBoolean* cancel) { FireBeforeDeleteShape(target, cancel); }
 	virtual tkCursorMode _GetCursorMode() { return (tkCursorMode)m_cursorMode; }
-	virtual void _FireValidateShape(LONG LayerHandle, IDispatch* Shape, tkMwBoolean* Cancel) { FireValidateShape(LayerHandle, Shape, Cancel); }
+	virtual void _FireValidateShape(LONG LayerHandle, IMyInterface* Shape, tkMwBoolean* Cancel) { FireValidateShape(LayerHandle, Shape, Cancel); }
 	virtual void _FireAfterShapeEdit(tkUndoOperation NewShape, LONG LayerHandle, LONG ShapeIndex) { FireAfterShapeEdit(NewShape, LayerHandle, ShapeIndex); }
 	virtual void _FireShapeValidationFailed(LPCTSTR ErrorMessage) { FireShapeValidationFailed(ErrorMessage); }
 	virtual void _FireBeforeVertexDigitized(DOUBLE* pointX, DOUBLE* pointY) { FireBeforeVertexDigitized(pointX, pointY); }

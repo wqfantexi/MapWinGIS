@@ -36,7 +36,6 @@ static char THIS_FILE[] = __FILE__;
 // CTin
 CTin::CTin()
 {	
-	_pUnkMarshaler = NULL;
 	_globalCallback = NULL;
 	_lastErrorCode = tkNO_ERROR;
 	USES_CONVERSION;
@@ -479,7 +478,7 @@ STDMETHODIMP CTin::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CTin::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 

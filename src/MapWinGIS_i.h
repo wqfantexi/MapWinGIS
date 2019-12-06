@@ -1,4 +1,4 @@
-
+﻿
 
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
@@ -15,6 +15,8 @@
 		  DECLSPEC_UUID(), MIDL_INTERFACE()
  */
  /* @@MIDL_FILE_HEADING(  ) */
+
+#pragma once
 
 #pragma warning( disable: 4049 )  /* more than 64k source lines */
 
@@ -36,12 +38,15 @@
 #include "ole2.h"
 #endif /*COM_NO_WINDOWS_H*/
 
-#ifndef __MapWinGIS_i_h__
-#define __MapWinGIS_i_h__
 
-#if defined(_MSC_VER) && (_MSC_VER >= 1020)
-#pragma once
-#endif
+class IMyInterface
+{
+public:
+	void AddRef(){}
+
+	ULONG Release() { return 0; }
+};
+
 
 
 /* header files for imported files */
@@ -987,7 +992,7 @@ enum SplitMethod
 {
 	InscribedRadius = 0,
 	AngleDeviation = 1
-} 	SplitMethod;
+};
 
 enum PolygonOperation
 {
@@ -995,21 +1000,21 @@ enum PolygonOperation
 	INTERSECTION_OPERATION = 1,
 	EXCLUSIVEOR_OPERATION = 2,
 	UNION_OPERATION = 3
-} 	PolygonOperation;
+};
 
 enum ColoringType
 {
 	Hillshade = 0,
 	Gradient = 1,
 	Random = 2
-} 	ColoringType;
+};
 
 enum GradientModel
 {
 	Logorithmic = 0,
 	Linear = 1,
 	Exponential = 2
-} 	GradientModel;
+};
 
 enum PredefinedColorScheme
 {
@@ -1023,7 +1028,7 @@ enum PredefinedColorScheme
 	Highway1 = 7,
 	Rainbow = 8,
 	ReversedRainbow = 9
-} 	PredefinedColorScheme;
+};
 
 enum tkSpatialRelation
 {
@@ -1699,13 +1704,13 @@ enum ShpfileType
 	SHP_POLYGONM = 25,
 	SHP_MULTIPOINTM = 28,
 	SHP_MULTIPATCH = 31
-} 	ShpfileType;
+};
 
 enum SelectMode
 {
 	INTERSECTION = 0,
 	INCLUSION = 1
-} 	SelectMode;
+};
 
 enum ImageType
 {
@@ -1734,7 +1739,7 @@ enum ImageType
 	NTF_FILE = 23,
 	NETCDF_FILE = 24,
 	VRT_FILE = 25
-} 	ImageType;
+};
 
 enum FieldType
 {
@@ -1743,7 +1748,7 @@ enum FieldType
 	DOUBLE_FIELD = 2,
 	BOOLEAN_FIELD = 3,
 	DATE_FIELD = 4
-} 	FieldType;
+};
 
 enum GridDataType
 {
@@ -1754,7 +1759,7 @@ enum GridDataType
 	InvalidDataType = -1,
 	UnknownDataType = 4,
 	ByteDataType = 5
-} 	GridDataType;
+};
 
 enum GridFileType
 {
@@ -1773,14 +1778,14 @@ enum GridFileType
 	Dem = 12,
 	UseExtension = 13,
 	InvalidGridFileType = -1
-} 	GridFileType;
+};
 
 enum AmbiguityResolution
 {
 	Z_VALUE = 0,
 	DISTANCE_TO_OUTLET = 1,
 	NO_RESOLUTION = 2
-} 	AmbiguityResolution;
+};
 
 enum tkValueType
 {
@@ -2645,7 +2650,7 @@ enum tkNad83Projection
 	NAD_1983_StatePlane_Wyoming_West_FIPS_4904_Feet = 102758,
 	NAD_1983_StatePlane_Puerto_Rico_Virgin_Islands_FIPS_5200_Feet = 102761,
 	NAD_1983_StatePlane_Guam_FIPS_5400_Feet = 102766
-} 	tkNad83Projection;
+};
 
 enum tkWgs84Projection
 {
@@ -2785,7 +2790,7 @@ enum tkWgs84Projection
 	Wgs84_UTM_zone_60S = 32760,
 	Wgs84_UPS_South_NE = 32761,
 	WGS_1984_Web_Mercator = 102113
-} 	tkWgs84Projection;
+};
 
 enum tkProjectionSet
 {
@@ -2795,13 +2800,42 @@ enum tkProjectionSet
 };
 
 
+//前置声明
+class IShape;
+class ICallback;
+class IShapeDrawingOptions;
+class IPoint;
+class IGridHeader;
+class IExtents;
+class IGridColorScheme;
+class IImage;
+class IGdalRasterBand;
+class IGeoProjection;
+class ILabels;
+class ITable;
+class IStopExecution;
+class IGdalDriver;
+class IField;
+class IShapefileCategories;
+class ICharts;
+class IShapefileCategory;
+class IShapeValidationInfo;
+class ITin;
+class IGridColorBreak;
+class IColorScheme;
+class ILinePattern;
+class ILabelCategory;
+class IColorScheme;
+class IFieldStatOperations;
+class IChart;
+class IChartField;
+class ILineSegment;
+class ITileProviders;
+class IOgrLayer;
+class IOgrDatasource;
+class IHistogram;
 
-extern RPC_IF_HANDLE __MIDL_itf_MapWinGIS_0000_0000_v0_0_c_ifspec;
-extern RPC_IF_HANDLE __MIDL_itf_MapWinGIS_0000_0000_v0_0_s_ifspec;
-
-
-EXTERN_C class
-IShapeEditor : public IDispatch
+EXTERN_C class IShapeEditor :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_ShapeType(
@@ -3061,7 +3095,7 @@ public:
 };
 
 
-EXTERN_C class IGrid : public IDispatch
+EXTERN_C class IGrid :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Header(
@@ -3288,7 +3322,7 @@ public:
 };
 
 
-EXTERN_C class IGridHeader : public IDispatch
+EXTERN_C class IGridHeader :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_NumberCols(
@@ -3383,7 +3417,7 @@ public:
 
 
 EXTERN_C class
-IESRIGridManager : public IDispatch
+IESRIGridManager :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_LastErrorCode(
@@ -3414,7 +3448,7 @@ public:
 
 
 
-EXTERN_C class IImage : public IDispatch
+EXTERN_C class IImage :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Open(
@@ -3958,7 +3992,7 @@ public:
 };
 
 
-EXTERN_C class IShapefile : public IDispatch
+EXTERN_C class IShapefile :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_NumShapes(
@@ -4648,7 +4682,7 @@ public:
 
 };
 
-EXTERN_C class IShape : public IDispatch
+EXTERN_C class IShape :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_NumPoints(
@@ -4954,7 +4988,7 @@ public:
 };
 
 
-EXTERN_C class IExtents : public IDispatch
+EXTERN_C class IExtents :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE SetBounds(
@@ -5034,7 +5068,7 @@ public:
 
 };
 
-EXTERN_C class IPoint : public IDispatch
+EXTERN_C class IPoint :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_X(
@@ -5090,7 +5124,7 @@ public:
 
 };
 
-EXTERN_C class ITable : public IDispatch
+EXTERN_C class ITable :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_NumRows(
@@ -5341,7 +5375,7 @@ public:
 
 };
 
-EXTERN_C class IField : public IDispatch
+EXTERN_C class IField :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Name(
@@ -5419,7 +5453,7 @@ public:
 
 };
 
-EXTERN_C class IShapeNetwork : public IDispatch
+EXTERN_C class IShapeNetwork :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Build(
@@ -5514,7 +5548,7 @@ public:
 
 };
 
-EXTERN_C class ICallback : public IDispatch
+EXTERN_C class ICallback :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Progress(
@@ -5532,7 +5566,7 @@ public:
 
 EXTERN_C class
 
-IStopExecution : public IDispatch
+IStopExecution :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE StopFunction(
@@ -5540,7 +5574,7 @@ public:
 
 };
 
-EXTERN_C class IUtils : public IDispatch
+EXTERN_C class IUtils :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE PointInPolygon(
@@ -5946,7 +5980,7 @@ public:
 
 };
 
-EXTERN_C class IVector : public IDispatch
+EXTERN_C class IVector :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_i(
@@ -5998,7 +6032,7 @@ public:
 
 };
 
-EXTERN_C class IGridColorScheme : public IDispatch
+EXTERN_C class IGridColorScheme :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_NumBreaks(
@@ -6107,7 +6141,7 @@ public:
 };
 
 
-EXTERN_C class IGridColorBreak : public IDispatch
+EXTERN_C class IGridColorBreak :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_HighColor(
@@ -6179,7 +6213,7 @@ public:
 
 };
 
-EXTERN_C class ITin : public IDispatch
+EXTERN_C class ITin :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Open(
@@ -6282,7 +6316,7 @@ public:
 };
 
 
-EXTERN_C class IShapeDrawingOptions : public IDispatch
+EXTERN_C class IShapeDrawingOptions :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_FillVisible(
@@ -6622,7 +6656,7 @@ public:
 
 };
 
-EXTERN_C class ILabel : public IDispatch
+EXTERN_C class ILabel :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Visible(
@@ -6670,7 +6704,7 @@ public:
 };
 
 
-EXTERN_C class ILabels : public IDispatch
+EXTERN_C class ILabels :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_LastErrorCode(
@@ -7256,7 +7290,7 @@ public:
 };
 
 
-EXTERN_C class ILabelCategory : public IDispatch
+EXTERN_C class ILabelCategory :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Priority(
@@ -7531,7 +7565,7 @@ public:
 
 };
 
-EXTERN_C class IShapefileCategories : public IDispatch
+EXTERN_C class IShapefileCategories :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_LastErrorCode(
@@ -7671,7 +7705,7 @@ public:
 
 };
 
-EXTERN_C class IShapefileCategory : public IDispatch
+EXTERN_C class IShapefileCategory :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Name(
@@ -7712,7 +7746,7 @@ public:
 
 };
 
-EXTERN_C class ICharts : public IDispatch
+EXTERN_C class ICharts :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Key(
@@ -8031,7 +8065,7 @@ public:
 
 };
 
-EXTERN_C class IChart : public IDispatch
+EXTERN_C class IChart :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_PositionX(
@@ -8064,7 +8098,7 @@ public:
 };
 
 
-EXTERN_C class IColorScheme : public IDispatch
+EXTERN_C class IColorScheme :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE SetColors(
@@ -8143,7 +8177,7 @@ public:
 };
 
 
-EXTERN_C class IChartField : public IDispatch
+EXTERN_C class IChartField :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Index(
@@ -8167,7 +8201,7 @@ public:
 };
 
 
-EXTERN_C class ILinePattern : public IDispatch
+EXTERN_C class ILinePattern :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Key(
@@ -8251,7 +8285,7 @@ public:
 
 };
 
-EXTERN_C class ILineSegment : public IDispatch
+EXTERN_C class ILineSegment :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Color(
@@ -8333,7 +8367,7 @@ public:
 };
 
 
-EXTERN_C class IGeoProjection : public IDispatch
+EXTERN_C class IGeoProjection :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE ExportToProj4(
@@ -8508,7 +8542,7 @@ public:
 };
 
 
-EXTERN_C class IGlobalSettings : public IDispatch
+EXTERN_C class IGlobalSettings :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_MinPolygonArea(
@@ -8905,7 +8939,7 @@ public:
 };
 
 
-EXTERN_C class ITiles : public IDispatch
+EXTERN_C class ITiles :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Visible(
@@ -9136,7 +9170,7 @@ public:
 
 };
 
-EXTERN_C class ITileProviders : public IDispatch
+EXTERN_C class ITileProviders :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Remove(
@@ -9239,7 +9273,7 @@ public:
 
 };
 
-EXTERN_C class IMeasuring : public IDispatch
+EXTERN_C class IMeasuring :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Length(
@@ -9426,7 +9460,7 @@ public:
 
 };
 
-EXTERN_C class IShapeValidationInfo : public IDispatch
+EXTERN_C class IShapeValidationInfo :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_ClassName(
@@ -9467,7 +9501,7 @@ public:
 
 };
 
-EXTERN_C class IFieldStatOperations : public IDispatch
+EXTERN_C class IFieldStatOperations :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE AddFieldIndex(
@@ -9526,7 +9560,7 @@ public:
 
 };
 
-EXTERN_C class IFileManager : public IDispatch
+EXTERN_C class IFileManager :public IMyInterface
 {
 public:
 	virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_IsSupported(
@@ -9558,7 +9592,7 @@ public:
 		/* [in] */ BSTR Filename,
 		/* [defaultvalue][in] */ tkFileOpenStrategy openStrategy,
 		/* [defaultvalue][in] */ ICallback *cBack,
-		/* [retval][out] */ IDispatch **retVal) = 0;
+		/* [retval][out] */ IMyInterface **retVal) = 0;
 
 	virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE OpenShapefile(
 		/* [in] */ BSTR Filename,
@@ -9653,7 +9687,7 @@ public:
 
 };
 
-EXTERN_C class IOgrDatasource : public IDispatch
+EXTERN_C class IOgrDatasource :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_ErrorMsg(
@@ -9767,7 +9801,7 @@ public:
 };
 
 
-EXTERN_C class IOgrLayer : public IDispatch
+EXTERN_C class IOgrLayer :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_ErrorMsg(
@@ -9968,7 +10002,7 @@ public:
 
 };
 
-EXTERN_C class IUndoList : public IDispatch
+EXTERN_C class IUndoList :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_ErrorMsg(
@@ -10020,7 +10054,7 @@ public:
 
 };
 
-EXTERN_C class IIdentifier : public IDispatch
+EXTERN_C class IIdentifier :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_HotTracking(
@@ -10043,7 +10077,7 @@ public:
 
 };
 
-EXTERN_C class ISelectionList : public IDispatch
+EXTERN_C class ISelectionList :public IMyInterface
 {
 public:
 	virtual /* [id] */ HRESULT STDMETHODCALLTYPE AddShape(
@@ -10098,7 +10132,7 @@ public:
 
 };
 
-EXTERN_C class IDrawingRectangle : public IDispatch
+EXTERN_C class IDrawingRectangle :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_X(
@@ -10157,7 +10191,7 @@ public:
 
 };
 
-EXTERN_C class IGdalRasterBand : public IDispatch
+EXTERN_C class IGdalRasterBand :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_NoDataValue(
@@ -10277,7 +10311,7 @@ public:
 
 };
 
-EXTERN_C class IHistogram : public IDispatch
+EXTERN_C class IHistogram :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_NumBuckets(
@@ -10306,7 +10340,7 @@ public:
 
 };
 
-EXTERN_C class IGdalDataset : public IDispatch
+EXTERN_C class IGdalDataset :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_Driver(
@@ -10341,7 +10375,7 @@ public:
 
 };
 
-EXTERN_C class IGdalDriver : public IDispatch
+EXTERN_C class IGdalDriver :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_Metadata(
@@ -10378,7 +10412,7 @@ public:
 
 };
 
-EXTERN_C class IGdalDriverManager : public IDispatch
+EXTERN_C class IGdalDriverManager :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_DriverCount(
@@ -10394,7 +10428,7 @@ public:
 
 };
 
-EXTERN_C class IFunction : public IDispatch
+EXTERN_C class IFunction :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_Name(
@@ -10429,7 +10463,7 @@ public:
 
 };
 
-EXTERN_C class IExpression : public IDispatch
+EXTERN_C class IExpression :public IMyInterface
 {
 public:
 	virtual /* [id] */ HRESULT STDMETHODCALLTYPE Parse(
@@ -10473,7 +10507,7 @@ public:
 
 };
 
-EXTERN_C class IWmsLayer : public IDispatch
+EXTERN_C class IWmsLayer :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_LastErrorCode(
@@ -10623,7 +10657,7 @@ public:
 
 };
 
-EXTERN_C class IGdalUtils : public IDispatch
+EXTERN_C class IGdalUtils :public IMyInterface
 {
 public:
 	virtual /* [id][propget] */ HRESULT STDMETHODCALLTYPE get_LastErrorCode(
@@ -10685,20 +10719,15 @@ public:
 };
 
 
-EXTERN_C class _DMap : public IDispatch
+EXTERN_C class _DMap :public IMyInterface
 {
 };
 
-EXTERN_C class _ITableEvents : public IDispatch
-{
-};
-
-
-EXTERN_C class _DMapEvents : public IDispatch
+EXTERN_C class _ITableEvents :public IMyInterface
 {
 };
 
 
-#endif
-
-
+EXTERN_C class _DMapEvents :public IMyInterface
+{
+};

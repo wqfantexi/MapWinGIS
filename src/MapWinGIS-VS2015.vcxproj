@@ -31,6 +31,7 @@
     <RootNamespace>MapWinGIS</RootNamespace>
     <Keyword>MFCProj</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>MapWinGIS</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
@@ -136,7 +137,7 @@
       <AdditionalOptions>/ignore:4099 /Ignore:4254  %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>cqlib.lib;GdiPlus.lib;gdal_i.lib;version.lib;Crypt32.lib;Dbghelp.lib;SpatialIndex-mw.lib;geos_c.lib;libtiff_i.lib;ShapeLib.lib;libcurl_imp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
-      <OutputFile>$(OutDir)MapWinGIS.ocx</OutputFile>
+      <OutputFile>$(OutDir)MapWinGIS.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <AdditionalLibraryDirectories>$(ProjectDir)..\Support\GDAL_SDK\$(PlatformToolset)\lib\$(Platform);$(ProjectDir)..\Support\lib\$(PlatformToolset)\$(Platform)\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -159,8 +160,8 @@
       <OutputFile>$(IntDir)$(ProjectName).bsc</OutputFile>
     </Bscmake>
     <PostBuildEvent>
-      <Command>if $(PlatformName) == Win32 setx  MapWinGISBin32 $(OutputPath)
-if $(PlatformName) == x64 setx  MapWinGISBin64 $(OutputPath)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <!-- Win32 platform definitions -->
@@ -495,7 +496,6 @@ if $(PlatformName) == x64 setx  MapWinGISBin64 $(OutputPath)</Command>
     <ClInclude Include="Tiles\Projections\BaseProjection.h" />
     <ClInclude Include="Tiles\Projections\CustomProjection.h" />
     <ClInclude Include="Tiles\Projections\MercatorProjection.h" />
-    <ClInclude Include="_ITableEvents_CP.H" />
   </ItemGroup>
   <!-- source -->
   <ItemGroup>
@@ -940,13 +940,6 @@ if $(PlatformName) == x64 setx  MapWinGISBin64 $(OutputPath)</Command>
   <!-- resources -->
   <ItemGroup>
     <ResourceCompile Include="MapWinGIS.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Midl Include="MapWinGIS.idl">
-      <HeaderFileName>MapWinGIS_i.h</HeaderFileName>
-      <InterfaceIdentifierFileName>MapWinGIS_i.c</InterfaceIdentifierFileName>
-      <TypeLibraryName>$(IntDir)MapWinGIS.tlb</TypeLibraryName>
-    </Midl>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

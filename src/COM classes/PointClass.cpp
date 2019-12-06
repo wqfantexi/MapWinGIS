@@ -129,7 +129,7 @@ STDMETHODIMP CPointClass::put_M(double newVal)
 STDMETHODIMP CPointClass::Clone(IPoint** retVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)retVal );
+	//CoCreateInstance( CLSID_Point, NULL, CLSCTX_INPROC_SERVER, IID_IPoint, (void**)retVal );
 	(*retVal)->put_X(_x);
 	(*retVal)->put_Y(_y);
 	(*retVal)->put_Z(_z);

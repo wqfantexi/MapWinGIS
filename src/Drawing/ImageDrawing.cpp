@@ -327,7 +327,7 @@ IImage* CImageDrawer::CreateSmallerProxyForGdalRaster(ImageSpecs& specs, IImage*
 	//	  preparing new class to save results
 	// ---------------------------------------------------------
 	IImage* imgNew = NULL;
-	CoCreateInstance(CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)&imgNew);
+	//CoCreateInstance(CLSID_Image, NULL, CLSCTX_INPROC_SERVER, IID_IImage, (void**)&imgNew);
 
 	VARIANT_BOOL vb;
 	imgNew->CreateNew(imgW, imgH, &vb);

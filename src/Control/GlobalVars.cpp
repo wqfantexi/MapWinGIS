@@ -31,7 +31,7 @@ IUtils* GetUtils()
 {
 	if (!m_utils)
 	{
-		CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&m_utils);
+		//CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&m_utils);
 	}
 	return m_utils;
 }
@@ -43,7 +43,7 @@ IShapefile* GetTempShapefile()
 {
 	if (!m_shapefile)
 	{
-		CoCreateInstance(CLSID_Shapefile,NULL,CLSCTX_INPROC_SERVER,IID_IShapefile,(void**)&m_shapefile);
+		//CoCreateInstance(CLSID_Shapefile,NULL,CLSCTX_INPROC_SERVER,IID_IShapefile,(void**)&m_shapefile);
 	}
 	return m_shapefile;
 }

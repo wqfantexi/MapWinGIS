@@ -44,7 +44,7 @@ void Layer::CloseDatasources()
 	}
 
 	CComPtr<IGrid> igrid = NULL;
-	_object->QueryInterface(IID_IGrid, (void**)&igrid);
+	//_object->QueryInterface(IID_IGrid, (void**)&igrid);
 	if (igrid != NULL) {
 		igrid->Close(&vb);
 	}
@@ -146,12 +146,12 @@ OgrDynamicLoader* Layer::GetOgrLoader()
 bool Layer::QueryShapefile(IShapefile** sf)
 {
 	if (!_object) return false;
-	_object->QueryInterface(IID_IShapefile, (void**)sf);
+	//_object->QueryInterface(IID_IShapefile, (void**)sf);
 	if (!(*sf))
 	{
 		// in case of OGR, we will return underlying shapefile
 		CComPtr<IOgrLayer> ogr = NULL;
-		_object->QueryInterface(IID_IOgrLayer, (void**)&ogr);
+		//_object->QueryInterface(IID_IOgrLayer, (void**)&ogr);
 		if (ogr)
 		{
 			ogr->GetBuffer(sf);
@@ -166,7 +166,7 @@ bool Layer::QueryShapefile(IShapefile** sf)
 bool Layer::QueryImage(IImage** img)
 {
 	if (!_object) return false;
-	_object->QueryInterface(IID_IImage, (void**)img);
+	//_object->QueryInterface(IID_IImage, (void**)img);
 	return (*img) != NULL;
 }
 
@@ -176,7 +176,7 @@ bool Layer::QueryImage(IImage** img)
 bool Layer::QueryOgrLayer(IOgrLayer** ogrLayer)
 {
 	if (!_object) return false;
-	_object->QueryInterface(IID_IOgrLayer, (void**)ogrLayer);
+	//_object->QueryInterface(IID_IOgrLayer, (void**)ogrLayer);
 	return (*ogrLayer) != NULL;
 }
 
@@ -186,7 +186,7 @@ bool Layer::QueryOgrLayer(IOgrLayer** ogrLayer)
 bool Layer::QueryWmsLayer(IWmsLayer** wmsLayer)
 {
 	if (!_object) return false;
-	_object->QueryInterface(IID_IWmsLayer, (void**)wmsLayer);
+	//_object->QueryInterface(IID_IWmsLayer, (void**)wmsLayer);
 	return (*wmsLayer) != NULL;
 }
 

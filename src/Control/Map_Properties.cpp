@@ -118,7 +118,7 @@ ICallback* CMapView::GetGlobalCallback()
 void CMapView::SetGlobalCallback(ICallback* newValue)
 {
 	ICallback * cback = NULL;
-	newValue->QueryInterface(IID_ICallback, (void**)&cback);
+	//newValue->QueryInterface(IID_ICallback, (void**)&cback);
 
 	if( _globalCallback )
 		_globalCallback->Release();

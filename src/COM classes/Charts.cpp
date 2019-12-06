@@ -254,7 +254,7 @@ STDMETHODIMP CCharts::InsertField2(long Index, long FieldIndex, OLE_COLOR Color,
 		else
 		{
 			IChartField* chartField = NULL;
-			CoCreateInstance(CLSID_ChartField, NULL, CLSCTX_INPROC_SERVER, IID_IChartField, (void**)&chartField);
+			//CoCreateInstance(CLSID_ChartField, NULL, CLSCTX_INPROC_SERVER, IID_IChartField, (void**)&chartField);
 			if (chartField)
 			{
 				chartField->put_Index(FieldIndex);
@@ -556,7 +556,7 @@ STDMETHODIMP CCharts::get_Chart(long ShapeIndex, IChart** retVal)
 			else
 			{
 				IChart* chart = NULL;
-				CoCreateInstance(CLSID_Chart, NULL, CLSCTX_INPROC_SERVER, IID_IChart, (void**)&chart);
+				//CoCreateInstance(CLSID_Chart, NULL, CLSCTX_INPROC_SERVER, IID_IChart, (void**)&chart);
 				if (chart)
 				{
 					ShapeRecord* data = (*positions)[ShapeIndex];
@@ -629,7 +629,7 @@ STDMETHODIMP CCharts::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CCharts::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-		ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+		ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -1259,7 +1259,7 @@ STDMETHODIMP CCharts::Select(IExtents* BoundingBox, long Tolerance, SelectMode S
 	vector<long> results;
 
 	IUtils* utils = NULL;
-	CoCreateInstance(CLSID_Utils, NULL, CLSCTX_INPROC_SERVER, IID_IUtils, (void**)&utils);
+	//CoCreateInstance(CLSID_Utils, NULL, CLSCTX_INPROC_SERVER, IID_IUtils, (void**)&utils);
 
 	long numShapes;
 	_shapefile->get_NumShapes(&numShapes);
@@ -1512,7 +1512,7 @@ bool CCharts::DeserializeCore(CPLXMLNode* node)
 			if (strcmp(node->pszValue, "ChartFieldClass") == 0)
 			{
 				IChartField* field = NULL;
-				CoCreateInstance(CLSID_ChartField, NULL, CLSCTX_INPROC_SERVER, IID_IChartField, (void**)&field);
+				//CoCreateInstance(CLSID_ChartField, NULL, CLSCTX_INPROC_SERVER, IID_IChartField, (void**)&field);
 
 				// name
 				s = CPLGetXMLValue(node, "Name", NULL);

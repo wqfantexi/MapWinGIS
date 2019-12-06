@@ -67,7 +67,7 @@ STDMETHODIMP COgrDatasource::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP COgrDatasource::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -138,7 +138,7 @@ STDMETHODIMP COgrDatasource::GetLayerByName(BSTR name, VARIANT_BOOL forUpdate, I
 	if (!CheckState()) return S_OK;
 	
 	IOgrLayer* layer = NULL;
-	ComHelper::CreateInstance(idOgrLayer, (IDispatch**)&layer);
+	ComHelper::CreateInstance(idOgrLayer, (IMyInterface**)&layer);
 
 	VARIANT_BOOL vb;
 	CComBSTR bstrConnection(_connectionString);
@@ -184,7 +184,7 @@ STDMETHODIMP COgrDatasource::GetLayer2(LONG index, VARIANT_BOOL forUpdate, VARIA
 	}
 	
 	IOgrLayer* layer = NULL;
-	ComHelper::CreateInstance(idOgrLayer, (IDispatch**)&layer);
+	ComHelper::CreateInstance(idOgrLayer, (IMyInterface**)&layer);
 
 	if (newConnection)
 	{
@@ -223,7 +223,7 @@ STDMETHODIMP COgrDatasource::RunQuery(BSTR sql, IOgrLayer** retVal)
 	if (CheckState())
 	{
 		IOgrLayer* layer = NULL;
-		ComHelper::CreateInstance(idOgrLayer, (IDispatch**)&layer);
+		ComHelper::CreateInstance(idOgrLayer, (IMyInterface**)&layer);
 
 		VARIANT_BOOL vb;
 		CComBSTR bstr(_connectionString);

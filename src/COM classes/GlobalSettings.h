@@ -30,41 +30,12 @@
 #endif
 
 // CGlobalSettings
-class ATL_NO_VTABLE CGlobalSettings :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CGlobalSettings, &CLSID_GlobalSettings>,
-	public IDispatchImpl<IGlobalSettings, &IID_IGlobalSettings, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CGlobalSettings : public IGlobalSettings
 {
 public:
 	CGlobalSettings()
 	{
-		_pUnkMarshaler = NULL;
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_GLOBALSETTINGS)
-
-	BEGIN_COM_MAP(CGlobalSettings)
-		COM_INTERFACE_ENTRY(IGlobalSettings)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
 
 public:
 	STDMETHOD(get_MinPolygonArea)(double* retVal);
@@ -229,5 +200,3 @@ public:
     STDMETHOD(get_AllowLayersWithIncompleteReprojection)(VARIANT_BOOL* pVal);
     STDMETHOD(put_AllowLayersWithIncompleteReprojection)(VARIANT_BOOL newVal);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(GlobalSettings), CGlobalSettings)

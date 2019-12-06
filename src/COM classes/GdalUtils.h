@@ -27,19 +27,11 @@
 #include "gdal_utils.h" // Is used, don't remove
 
 
-#if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
-#error "Single-threaded COM objects are not properly supported on Windows CE platform, such as the Windows Mobile platforms that do not include full DCOM support. Define _CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA to force ATL to support creating single-thread COM object's and allow use of it's single-threaded COM object implementations. The threading model in your rgs file was set to 'Free' as that is the only threading model supported in non DCOM Windows CE platforms."
-#endif
-
-class ATL_NO_VTABLE CGdalUtils :
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CGdalUtils, &CLSID_GdalUtils>,
-	public IDispatchImpl<IGdalUtils, &IID_IGdalUtils, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CGdalUtils : public IGdalUtils
 {
 public:
 	CGdalUtils()
 	{
-		m_pUnkMarshaler = nullptr;
 		_lastErrorCode = tkNO_ERROR;
 		_globalCallback = nullptr;
 		_key = SysAllocString(L"");
@@ -48,30 +40,6 @@ public:
 	}
 
 	virtual ~CGdalUtils();
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_GdalUtils)
-
-	BEGIN_COM_MAP(CGdalUtils)
-		COM_INTERFACE_ENTRY(IGdalUtils)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, m_pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(
-			GetControllingUnknown(), &m_pUnkMarshaler.p);
-	}
-
-	void FinalRelease()
-	{
-		m_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> m_pUnkMarshaler;
 
 public:
 	STDMETHOD(get_ErrorMsg)(/*[in]*/ long errorCode, /*[out, retval]*/ BSTR *pVal) override;
@@ -105,5 +73,3 @@ public:
 	// methods
 	inline void ErrorMessage(long errorCode);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(GdalUtils), CGdalUtils)

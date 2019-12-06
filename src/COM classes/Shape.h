@@ -29,43 +29,12 @@
 // ******************************************************
 //	 CShape declaration
 // ******************************************************
-class ATL_NO_VTABLE CShape : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CShape, &CLSID_Shape>,
-	public IDispatchImpl<IShape, &IID_IShape, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CShape : public IShape
 {
 public:
 	CShape();
 
 	~CShape();
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_SHAPE)
-
-	DECLARE_NOT_AGGREGATABLE(CShape)
-
-	BEGIN_COM_MAP(CShape)
-		COM_INTERFACE_ENTRY(IShape)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 // ******************************************************
 //	 IShape interface
 // ******************************************************
@@ -187,5 +156,3 @@ public:
 	void get_LabelPositionAuto(tkLabelPositioning method, double& x, double& y, double& rotation, tkLineLabelOrientation orientation);
 	bool SplitByPolylineCore(IShape* polyline, vector<IShape*>& results);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Shape), CShape)

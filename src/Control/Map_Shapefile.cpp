@@ -358,7 +358,7 @@ void CMapView::SetShapeLayerPointColor(long LayerHandle, OLE_COLOR nNewValue)
 // *****************************************************************
 //		GetUDPointType()
 // *****************************************************************
-LPDISPATCH CMapView::GetUDPointType(long LayerHandle)
+IMyInterface* CMapView::GetUDPointType(long LayerHandle)
 {
 	CDrawingOptionsEx* options = get_ShapefileDrawingOptions(LayerHandle);
 	if (options)
@@ -378,14 +378,14 @@ LPDISPATCH CMapView::GetUDPointType(long LayerHandle)
 // *****************************************************************
 //		SetUDPointType()
 // *****************************************************************
-void CMapView::SetUDPointType(long LayerHandle, LPDISPATCH newValue)
+void CMapView::SetUDPointType(long LayerHandle, IMyInterface* newValue)
 {
 	CDrawingOptionsEx* options = get_ShapefileDrawingOptions(LayerHandle);
 	if (options)
 	{
 		IImage * iimg = NULL;
-		newValue->QueryInterface( IID_IImage, (void**)&iimg );
-		ComHelper::SetRef((IDispatch*)iimg, (IDispatch**)&options->picture, true);
+		//newValue->QueryInterface( IID_IImage, (void**)&iimg );
+		ComHelper::SetRef((IMyInterface*)iimg, (IMyInterface**)&options->picture, true);
 		if (iimg)
 		{
 			iimg->Release();
@@ -995,7 +995,7 @@ long CMapView::get_UDPointImageListCount(long LayerHandle)
 // *****************************************************************
 //		get_UDPointImageListItem()
 // *****************************************************************
-IDispatch* CMapView::get_UDPointImageListItem(long LayerHandle, long ImageIndex)
+IMyInterface* CMapView::get_UDPointImageListItem(long LayerHandle, long ImageIndex)
 {
 	ErrorMessage(tkPROPERTY_DEPRECATED);
 	return NULL;
@@ -1012,7 +1012,7 @@ void CMapView::ClearUDPointImageList(long LayerHandle)
 // *****************************************************************
 //		set_UDPointImageListAdd()
 // *****************************************************************
-long CMapView::set_UDPointImageListAdd(long LayerHandle, LPDISPATCH newValue)
+long CMapView::set_UDPointImageListAdd(long LayerHandle, IMyInterface* newValue)
 {
 	ErrorMessage(tkPROPERTY_DEPRECATED);
 	return -1;

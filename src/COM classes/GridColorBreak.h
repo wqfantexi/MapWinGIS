@@ -25,15 +25,11 @@
 #pragma once
 
 // CGridColorBreak
-class ATL_NO_VTABLE CGridColorBreak : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CGridColorBreak, &CLSID_GridColorBreak>,
-	public IDispatchImpl<IGridColorBreak, &IID_IGridColorBreak, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CGridColorBreak : public IGridColorBreak
 {
 public:
 	CGridColorBreak()
 	{
-		_pUnkMarshaler = NULL;
 		_colorType = Hillshade;
 		_gradModel = Linear;
 		_lastErrorCode = tkNO_ERROR;
@@ -45,34 +41,6 @@ public:
 	{
 		::SysFreeString(_key);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_GRIDCOLORBREAK)
-
-	DECLARE_NOT_AGGREGATABLE(CGridColorBreak)
-
-	BEGIN_COM_MAP(CGridColorBreak)
-		COM_INTERFACE_ENTRY(IGridColorBreak)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 
 // IGridColorBreak
 public:
@@ -113,6 +81,3 @@ private:
 	VARIANT_BOOL _visible;
 	
 };
-
-
-OBJECT_ENTRY_AUTO(__uuidof(GridColorBreak), CGridColorBreak)

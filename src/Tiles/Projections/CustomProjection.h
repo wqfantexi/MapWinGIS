@@ -36,8 +36,8 @@ public:
 	{
 		_projected = true;
 
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&_projWGS84);
-		ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&_projCustom);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&_projWGS84);
+		ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&_projCustom);
 
 		VARIANT_BOOL vb;
 		_projWGS84->ImportFromEPSG(4326, &vb);

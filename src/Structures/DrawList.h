@@ -59,7 +59,7 @@ public:
 	{	
 		key = SysAllocString(L"");
 		m_labels = NULL;
-		CoCreateInstance(CLSID_Labels,NULL,CLSCTX_INPROC_SERVER,IID_ILabels,(void**)&m_labels);
+		//CoCreateInstance(CLSID_Labels,NULL,CLSCTX_INPROC_SERVER,IID_ILabels,(void**)&m_labels);
 	}
 	~DrawList()
 	{	::SysFreeString(key);

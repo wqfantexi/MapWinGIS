@@ -10,9 +10,6 @@ public:
 	GlobalClassFactory::GlobalClassFactory()
 	{
 		pointFactory = shapeFactory = extentsFactory =  NULL;
-		CoGetClassObject(CLSID_Point, CLSCTX_INPROC_SERVER, NULL, IID_IClassFactory, (void**)&pointFactory); 
-		CoGetClassObject(CLSID_Shape, CLSCTX_INPROC_SERVER, NULL, IID_IClassFactory, (void**)&shapeFactory);
-		CoGetClassObject(CLSID_Extents, CLSCTX_INPROC_SERVER, NULL, IID_IClassFactory, (void**)&extentsFactory);
 	}
 
 	~GlobalClassFactory()

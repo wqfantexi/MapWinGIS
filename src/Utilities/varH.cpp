@@ -29,7 +29,7 @@ typedef struct tagVARIANT  {
         DATE                    date;                        // VT_DATE.
         BSTR                    bstrVal;                    // VT_BSTR.
         IUnknown                FAR* punkVal;            // VT_UNKNOWN.
-        IDispatch             FAR* pdispVal;            // VT_DISPATCH.
+        IMyInterface             FAR* pdispVal;            // VT_DISPATCH.
         SAFEARRAY            FAR* parray;            // VT_ARRAY|*.
         unsigned char        FAR* pbVal;                // VT_BYREF|VT_UI1.
         short                    FAR* piVal;                // VT_BYREF|VT_I2.
@@ -42,7 +42,7 @@ typedef struct tagVARIANT  {
         DATE                    FAR* pdate;                // VT_BYREF|VT_DATE.
         BSTR                    FAR* pbstrVal;            // VT_BYREF|VT_BSTR.
         IUnknown FAR*        FAR* ppunkVal;            // VT_BYREF|VT_UNKNOWN.
-        IDispatch FAR*        FAR* ppdispVal;        // VT_BYREF|VT_DISPATCH.
+        IMyInterface FAR*        FAR* ppdispVal;        // VT_BYREF|VT_DISPATCH.
         SAFEARRAY FAR*        FAR* pparray;            // VT_ARRAY|*.
         VARIANT                FAR* pvarVal;            // VT_BYREF|VT_VARIANT.
         void                    FAR* byref;                // Generic ByRef.

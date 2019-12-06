@@ -24,15 +24,11 @@
 #pragma once
 
 // CField
-class ATL_NO_VTABLE CField : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CField, &CLSID_Field>,
-	public IDispatchImpl<IField, &IID_IField, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CField : public IField
 {
 public:
 	CField()
 	{
-		_pUnkMarshaler = NULL;
 		_key = SysAllocString(L"");
 		_name = SysAllocString(L"");
 		_alias = SysAllocString(L"");
@@ -47,7 +43,6 @@ public:
 		_visible = VARIANT_TRUE;
 		_joinId = -1;
 		_modified = VARIANT_FALSE;
-		gReferenceCounter.AddRef(tkInterface::idField);
 	}
 
 	~CField()
@@ -60,35 +55,7 @@ public:
 		if( _globalCallback )
 			_globalCallback->Release();
 		_globalCallback = NULL;
-		gReferenceCounter.Release(tkInterface::idField);
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_FIELD)
-
-	DECLARE_NOT_AGGREGATABLE(CField)
-
-	BEGIN_COM_MAP(CField)
-		COM_INTERFACE_ENTRY(IField)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 // IField
 public:
 	STDMETHOD(get_Key)(/*[out, retval]*/ BSTR *pVal);
@@ -145,5 +112,3 @@ public:
 	int GetJoinId() {return _joinId; }
 	void SetJoinId(int value) { _joinId = value; }
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Field), CField)

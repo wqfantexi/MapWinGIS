@@ -58,41 +58,11 @@ typedef struct {
    double x,y,z;
 } XYZ;
 
-class ATL_NO_VTABLE CTin : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CTin, &CLSID_Tin>,
-	public IDispatchImpl<ITin, &IID_ITin, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CTin : public ITin
 {
 public:
 	CTin();
 	~CTin();
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_TIN)
-
-	DECLARE_NOT_AGGREGATABLE(CTin)
-
-	BEGIN_COM_MAP(CTin)
-		COM_INTERFACE_ENTRY(ITin)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 // ITin
 public:
 	STDMETHOD(TriangleNeighbors)(/*[in]*/ long TriIndex, /*[in, out]*/ long * triIndex1, /*[in, out]*/ long * triIndex2, /*[in, out]*/ long * triIndex3);
@@ -178,5 +148,3 @@ private:
 		double x1,double y1,double x2,double y2,double x3,double y3,
 		double *xc,double *yc,double *r);
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(Tin), CTin)

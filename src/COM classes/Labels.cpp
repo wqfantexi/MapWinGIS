@@ -196,7 +196,7 @@ STDMETHODIMP CLabels::get_GlobalCallback(ICallback **pVal)
 STDMETHODIMP CLabels::put_GlobalCallback(ICallback *newVal)
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState())
-	ComHelper::SetRef(newVal, (IDispatch**)&_globalCallback);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_globalCallback);
 	return S_OK;
 }
 
@@ -223,7 +223,7 @@ STDMETHODIMP CLabels::get_Label(long Index, long Part, ILabel** pVal)
 		else
 		{
 			ILabel* lbl = NULL;
-			CoCreateInstance(CLSID_Label,NULL,CLSCTX_INPROC_SERVER,IID_ILabel,(void**)&lbl);
+			//CoCreateInstance(CLSID_Label,NULL,CLSCTX_INPROC_SERVER,IID_ILabel,(void**)&lbl);
 			CLabelClass* coLabel = static_cast<CLabelClass*>(lbl);
 			coLabel->put_LabelData(reinterpret_cast<char*>(parts->at(Part)));
 			*pVal = lbl;
@@ -314,7 +314,7 @@ STDMETHODIMP CLabels::put_Category(long Index, ILabelCategory* newVal)
 		}
 		else
 		{
-			ComHelper::SetRef(newVal, (IDispatch**)&_categories[Index], false);
+			ComHelper::SetRef(newVal, (IMyInterface**)&_categories[Index], false);
 		}
 	}
 	return S_OK;
@@ -497,7 +497,7 @@ STDMETHODIMP CLabels::InsertCategory(long Index, BSTR Name, ILabelCategory** ret
 	
 	*retVal = NULL;
 	ILabelCategory* cat = NULL;
-	CoCreateInstance( CLSID_LabelCategory, NULL, CLSCTX_INPROC_SERVER, IID_ILabelCategory, (void**)&cat);
+	//CoCreateInstance( CLSID_LabelCategory, NULL, CLSCTX_INPROC_SERVER, IID_ILabelCategory, (void**)&cat);
 	if (cat == NULL) return S_OK;
 
 	CLabelOptions* options = this->get_LabelOptions(); 
@@ -720,7 +720,7 @@ STDMETHODIMP CLabels::Select(IExtents* BoundingBox, long Tolerance, SelectMode S
 	vector<long> parts;
 	
 	IUtils* utils = NULL;
-	CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&utils);
+	//CoCreateInstance(CLSID_Utils,NULL,CLSCTX_INPROC_SERVER,IID_IUtils,(void**)&utils);
 
 	for (unsigned long i = 0; i < _labels.size(); i++)
 	{
@@ -1177,7 +1177,7 @@ STDMETHODIMP CLabels::put_Options(ILabelCategory* newVal)
 		CLabelOptions* options =  coCat->get_LabelOptions();
 		_options = *options;*/
 
-	ComHelper::SetRef(newVal, (IDispatch**)&_category, false);
+	ComHelper::SetRef(newVal, (IMyInterface**)&_category, false);
 	_options = ((CLabelCategory*)_category)->get_LabelOptions();
 
 	return S_OK;
@@ -2144,7 +2144,7 @@ STDMETHODIMP CLabels::SaveToDbf2(BSTR xField, BSTR yField, BSTR angleField, BSTR
 		if (!field)
 		{
 			// creating fields
-			CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&field);
+			//CoCreateInstance(CLSID_Field,NULL,CLSCTX_INPROC_SERVER,IID_IField,(void**)&field);
 			if (field)
 			{
 				field->put_Name(fields[i]);

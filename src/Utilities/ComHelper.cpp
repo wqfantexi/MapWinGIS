@@ -30,7 +30,7 @@
 //	  ComHelper::SetRef
 // ********************************************************
 // Sets new instance of COM object to the given pointer. Takes care to release the old reference
-bool ComHelper::SetRef(IDispatch* newVal, IDispatch** oldVal, bool allowNull)
+bool ComHelper::SetRef(IMyInterface* newVal, IMyInterface** oldVal, bool allowNull)
 {
 	if (*oldVal == NULL)
 	{
@@ -72,10 +72,10 @@ bool ComHelper::SetRef(IDispatch* newVal, IDispatch** oldVal, bool allowNull)
 // ********************************************************
 //	  CreateInstance
 // ********************************************************
-HRESULT ComHelper::CreateInstance(tkInterface interfaceId, IDispatch** retVal)
+HRESULT ComHelper::CreateInstance(tkInterface interfaceId, IMyInterface** retVal)
 {
 	HRESULT result = S_FALSE;
-	void* val = NULL;
+	/*void* val = NULL;
 	switch (interfaceId)
 	{
 		case tkInterface::idPoint:
@@ -243,7 +243,7 @@ HRESULT ComHelper::CreateInstance(tkInterface interfaceId, IDispatch** retVal)
 			result = CoCreateInstance(CLSID_GdalUtils, NULL, CLSCTX_INPROC_SERVER, IID_IGdalUtils, (void**)&val);
 			break;
 	}
-	*retVal = val ? (IDispatch*)val : NULL;
+	*retVal = val ? (IMyInterface*)val : NULL;*/
 	return result;
 }
 
@@ -308,7 +308,7 @@ CString ComHelper::GetInterfaceName(tkInterface id)
 // ********************************************************
 void ComHelper::CreatePoint(IPoint** point)
 {
-	m_factory.pointFactory->CreateInstance(NULL, IID_IPoint, (void**)point);
+	//m_factory.pointFactory->CreateInstance(NULL, IID_IPoint, (void**)point);
 }
 
 // ********************************************************
@@ -316,7 +316,7 @@ void ComHelper::CreatePoint(IPoint** point)
 // ********************************************************
 void ComHelper::CreateShape(IShape** shp)
 {
-	m_factory.shapeFactory->CreateInstance(NULL, IID_IShape, (void**)shp);
+	//m_factory.shapeFactory->CreateInstance(NULL, IID_IShape, (void**)shp);
 }
 
 // ********************************************************
@@ -324,5 +324,5 @@ void ComHelper::CreateShape(IShape** shp)
 // ********************************************************
 void ComHelper::CreateExtents(IExtents** box)
 {
-	m_factory.extentsFactory->CreateInstance(NULL, IID_IExtents, (void**)box);
+	//m_factory.extentsFactory->CreateInstance(NULL, IID_IExtents, (void**)box);
 }

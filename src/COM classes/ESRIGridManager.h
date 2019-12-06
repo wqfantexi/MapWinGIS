@@ -26,43 +26,13 @@
 #include "GridManager.h"
 
 // CESRIGridManager
-class ATL_NO_VTABLE CESRIGridManager : 
-	public CComObjectRootEx<CComObjectThreadModel>,
-	public CComCoClass<CESRIGridManager, &CLSID_ESRIGridManager>,
-	public IDispatchImpl<IESRIGridManager, &IID_IESRIGridManager, &LIBID_MapWinGIS, /*wMajor =*/ VERSION_MAJOR, /*wMinor =*/ VERSION_MINOR>
+class CESRIGridManager : public IESRIGridManager
 {
 public:
 	CESRIGridManager()
-	{	_globalCallback = NULL;
-		_pUnkMarshaler = NULL;
+	{	
+		_globalCallback = NULL;
 	}
-
-	DECLARE_REGISTRY_RESOURCEID(IDR_ESRIGRIDMANAGER)
-
-	DECLARE_NOT_AGGREGATABLE(CESRIGridManager)
-
-	BEGIN_COM_MAP(CESRIGridManager)
-		COM_INTERFACE_ENTRY(IESRIGridManager)
-		COM_INTERFACE_ENTRY(IDispatch)
-		COM_INTERFACE_ENTRY_AGGREGATE(IID_IMarshal, _pUnkMarshaler.p)
-	END_COM_MAP()
-
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
-	DECLARE_GET_CONTROLLING_UNKNOWN()
-
-	HRESULT FinalConstruct()
-	{
-		return CoCreateFreeThreadedMarshaler(GetControllingUnknown(), &_pUnkMarshaler.p);
-		return S_OK;
-	}
-
-	void FinalRelease()
-	{
-		_pUnkMarshaler.Release();
-	}
-
-	CComPtr<IUnknown> _pUnkMarshaler;
-
 
 // IESRIGridManager
 public:
@@ -78,5 +48,3 @@ private:
 	ICallback * _globalCallback;
 	GridManager _gm;
 };
-
-OBJECT_ENTRY_AUTO(__uuidof(ESRIGridManager), CESRIGridManager)

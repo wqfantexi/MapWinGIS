@@ -215,7 +215,7 @@ void CMapView::Clear()
 	SetDefaults();
 
 	CComPtr<IGeoProjection> p = NULL;
-	ComHelper::CreateInstance(idGeoProjection, (IDispatch**)&p);
+	ComHelper::CreateInstance(idGeoProjection, (IMyInterface**)&p);
 	SetGeoProjection(p);
 
 	Redraw();
@@ -287,21 +287,21 @@ void CMapView::Startup()
 	_hotTracking.Shapefile = NULL;
 	_rotate = NULL;
 
-	ComHelper::CreateInstance(idTiles, (IDispatch**)&_tiles);
+	ComHelper::CreateInstance(idTiles, (IMyInterface**)&_tiles);
 	((CTiles*)_tiles)->Init(this);
 
-	ComHelper::CreateInstance(idMeasuring, (IDispatch**)&_measuring);
-	ComHelper::CreateInstance(idShapeEditor, (IDispatch**)&_shapeEditor);
-	ComHelper::CreateInstance(idShapeEditor, (IDispatch**)&_geodesicShape);
+	ComHelper::CreateInstance(idMeasuring, (IMyInterface**)&_measuring);
+	ComHelper::CreateInstance(idShapeEditor, (IMyInterface**)&_shapeEditor);
+	ComHelper::CreateInstance(idShapeEditor, (IMyInterface**)&_geodesicShape);
 
-	ComHelper::CreateInstance(idIdentifier, (IDispatch**)&_identifier);
-	ComHelper::CreateInstance(idFileManager, (IDispatch**)&_fileManager);
-	ComHelper::CreateInstance(idUndoList, (IDispatch**)&_undoList);
+	ComHelper::CreateInstance(idIdentifier, (IMyInterface**)&_identifier);
+	ComHelper::CreateInstance(idFileManager, (IMyInterface**)&_fileManager);
+	ComHelper::CreateInstance(idUndoList, (IMyInterface**)&_undoList);
 	((CUndoList*)_undoList)->SetMapCallback(this);
 
-	ComHelper::CreateInstance(idSelectionList, (IDispatch**)&_identifiedShapes);
-	ComHelper::CreateInstance(idShapefile, (IDispatch**)&_identifiedShapefile);
-	ComHelper::CreateInstance(idDrawingRectangle, (IDispatch**)&_focusRectangle);
+	ComHelper::CreateInstance(idSelectionList, (IMyInterface**)&_identifiedShapes);
+	ComHelper::CreateInstance(idShapefile, (IMyInterface**)&_identifiedShapefile);
+	ComHelper::CreateInstance(idDrawingRectangle, (IMyInterface**)&_focusRectangle);
 	_focusRectangle->put_Visible(VARIANT_TRUE);
 	
 	InitProjections();
