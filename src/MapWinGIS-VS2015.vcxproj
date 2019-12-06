@@ -57,7 +57,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
-    <TargetExt>.ocx</TargetExt>
+    <TargetExt>.dll</TargetExt>
     <PreBuildEventUseInBuild>true</PreBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
