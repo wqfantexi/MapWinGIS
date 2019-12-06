@@ -39,10 +39,10 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 // Chris Michaelis - ATL
-#include "atlbase.h"
-#include "atlctl.h"
-#define _WIN32_DCOM
+//#include "atlbase.h"
+//#include "atlctl.h"
+//#define _WIN32_DCOM
 
 #include "GlobalVars.h"
 
-#include <atlcom.h>
+//#include <atlcom.h>
